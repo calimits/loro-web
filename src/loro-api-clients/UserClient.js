@@ -30,9 +30,13 @@ class UserClient {
 
     async signIn(username, password) {
         const body = {username, password};
-        const res = await this.#httpHelper.post(`${this.#baseURL}/users/sign-in`, {body});
+        const res = await this.#httpHelper.post(`${this.#baseURL}/users/sign-in`, {body,credentials: 'include'});
         this.#accessToken = res.token;
         this.#userID = res.userID;
+    }
+
+    async logout() {
+        await this.#httpHelper.post(`${this.#baseURL}/users/logout`, {credentials: 'include'});
     }
 }
 
