@@ -1,0 +1,48 @@
+
+
+.message-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: .3rem;
+    position: sticky;
+    background-color: rgba(255,255,255, .9);
+    z-index: 1000;
+    border-top: solid .1rem rgb(238, 238, 238);
+}
+
+.send-message-icon {
+    width: 100%;
+}
+
+.send-button {
+    width: 6%;
+    background-color: rgb(241, 75, 186);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all ease .1s;
+}
+
+.send-button:hover {
+    background-color: rgb(187, 26, 133);
+}
+
+.send-button:active {
+    background-color: rgb(26, 187, 80);
+}
+
+.input-message {
+    width: 80%;
+    padding: .5rem;
+    border: none;
+    border-radius: 1rem;
+}
+
+.input-message:focus {
+    width: 80%;
+    outline: none;
+    padding: .5rem;
+    border: none;
+    border-radius: 1rem;
+}

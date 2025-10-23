@@ -1,0 +1,64 @@
+
+.chat-options{
+    font-weight: bold;
+    margin-right: .3rem;
+    cursor: pointer;
+}
+
+.chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .3rem;
+    position: sticky;
+    background-color: rgba(255,255,255, .9);
+    z-index: 1000;
+    border-bottom: solid .1rem rgb(238, 238, 238);
+}
+
+.chat-name {
+    margin: 0;
+    padding: .3rem;
+    padding-right: 2rem;
+    cursor: pointer;
+    transition: all ease .1s;
+}
+
+.chat-name:hover {
+    transform: scale(1.1);
+    color: rgb(240, 50, 177);
+}
+
+
+.dropDown-chat-content {
+    display: none;
+    flex-flow: column;
+    position: absolute;
+    right: .3rem;
+    z-index: 10001;
+    border-radius: 1rem;
+    border: solid .1rem rgb(231, 231, 231);
+    box-shadow: .2rem .2rem .2rem .2rem rgba(0,0,0,.05);
+    background-color: rgba(255,255,255, .9);
+}
+
+.options {
+    padding: .5rem;
+    padding-left: .8rem;
+    padding-right: .8rem;
+    margin: 0;
+    font-weight: lighter;
+    transition: all ease .1s;
+}
+
+.options:hover {
+    color:rgb(240, 50, 177)
+}
+
+.dropDown-btn:hover .dropDown-chat-content {
+    display: flex;
+}
+
+.dropDown-menu-chat:hover .dropDown-chat-content {
+    display: flex;
+}

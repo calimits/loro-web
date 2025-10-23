@@ -1,0 +1,16 @@
+
+.home {
+    display: flex;
+    flex-basis: 37%;
+    flex-flow: column;
+    height: 100vh;
+}
+
+@media (max-width: 560px) {
+    .home {
+        display: flex;
+        flex: 1;
+        flex-flow: column;
+        height: 100vh;
+    }
+}

@@ -1,0 +1,10 @@
+
+
+.message-container {
+    padding: .5rem;
+    background-image: url("../../assets//chat-back.png");
+    background-attachment: fixed;
+    background-size: cover;
+    flex: 1;
+    overflow-y: auto;
+}

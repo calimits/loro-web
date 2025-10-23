@@ -1,0 +1,88 @@
+
+.header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .3rem;
+    position: sticky;
+    top: 0;
+    background-color: rgba(255,255,255, .9);
+    z-index: 1000;
+}
+
+.to-left {
+    display: flex;
+    align-items: center;
+}
+
+.search {
+    border: solid .1rem rgb(240, 238, 238);
+    padding: .5rem;
+    border-radius: 2rem;
+    background-color: rgba(240, 238, 238, 0.9);
+}
+
+.menu-icon {
+    width: 100%;
+    height: 100%;
+    transition: all ease .1s;
+}
+
+.menu-icon:hover {
+    transform: scale(1.1);
+}
+
+.app-title {
+    margin: 0;
+    padding: .3rem;
+    color: rgb(240, 50, 177);
+    padding-right: 2rem;
+}
+
+.dropDown-menu {
+    width: 2rem;
+}
+
+.dropDown-content {
+    display: none;
+    flex-flow: column;
+    position: absolute;
+    z-index: 10001;
+    border-radius: 1rem;
+    border: solid .1rem rgb(231, 231, 231);
+    box-shadow: .2rem .2rem .2rem .2rem rgba(0,0,0,.05);
+    background-color: rgba(255,255,255, .9);
+}
+
+.options {
+    padding: .5rem;
+    padding-left: .8rem;
+    padding-right: .8rem;
+    margin: 0;
+    font-weight: lighter;
+    transition: all ease .1s;
+}
+
+.options:hover {
+    color:rgb(240, 50, 177)
+}
+
+.dropDown-btn:hover .dropDown-content {
+    display: block;
+}
+
+.dropDown-menu:hover .dropDown-content {
+    display: flex;
+}
+
+@media (max-width: 340px) {
+    .search {
+        width: 70%;
+    }
+}
+
+@media (min-width: 560px) and (max-width: 915px) {
+    .search {
+        width: 85%;
+    }
+}

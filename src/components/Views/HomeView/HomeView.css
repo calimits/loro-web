@@ -1,0 +1,29 @@
+
+
+.home-view {
+    display: flex;
+}
+
+.chat-back {
+    margin: 0;
+    height: 100%;
+}
+
+.space-background {
+    flex: 1;
+    background-image: url("../../../assets//chat-back.png");
+}
+
+@media (max-width: 560px) {
+    .space-background {
+        display: none;
+    }
+    
+    .home-view {
+        display: block;
+    }
+    .chat-back {
+        margin: 0;
+        display: none;
+    }
+}

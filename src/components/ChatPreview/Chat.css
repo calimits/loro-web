@@ -1,0 +1,59 @@
+
+.chat-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .3rem;
+    border-bottom: solid .1rem rgb(238, 238, 238);
+    transition: all ease .1s;
+}
+
+.chat-container:hover {
+    background-color: rgb(228, 111, 183);
+    color: white;
+}
+
+.chat-info {
+    display: flex;
+    align-items: center;
+}
+
+.notifications-section {
+    display: flex;
+    align-items: center;
+}
+
+
+.chat-last-message {
+    display: flex;
+}
+
+.chat-title {
+    padding: .3rem;
+}
+
+.profile-pic {
+    width: 10%;
+    height: 10%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+}
+
+.chat-title {
+    font-size: 1rem;
+}
+
+.text {
+    margin: .1rem;
+    margin-right: .3rem;
+}
+
+.highlighted{
+    background-color: rgb(240, 139, 189);
+    padding: .1rem;
+    padding-left: .2rem;
+    padding-right: .2rem;
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+}

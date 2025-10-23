@@ -1,0 +1,14 @@
+
+.chat {
+    display: flex;
+    flex: 1;
+    flex-flow: column;
+    height: 100%;
+    min-height: 100vh;
+}
+
+@media (max-width: 560px) {
+    .chat {
+        display: none;
+    }
+}
