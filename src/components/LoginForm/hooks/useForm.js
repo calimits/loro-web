@@ -32,7 +32,6 @@ export default function useForm() {
                 navigate("/");
             }, 800);
         } catch (error) {
-            console.log(error.errMessage === "Password don't match")
             if (error.errMessage === "Password don't match") {
                 setIsSignedIn({ ...IsSignedIn, credentialsErr: true });
             } else {

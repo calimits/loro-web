@@ -38,6 +38,12 @@ class UserClient {
     async logout() {
         await this.#httpHelper.post(`${this.#baseURL}/users/logout`, {credentials: 'include'});
     }
-}
+
+    async refreshTokens() {
+        const res = await this.#httpHelper.post(`${this.#baseURL}/users/refresh-tokens`, {credentials: 'include'});
+        this.#accessToken = res.token;
+        this.#userID = res.userID;
+    }
+} 
 
 export {UserClient};

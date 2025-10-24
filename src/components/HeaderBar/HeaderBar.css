@@ -61,6 +61,7 @@
     margin: 0;
     font-weight: lighter;
     transition: all ease .1s;
+    cursor: pointer;
 }
 
 .options:hover {

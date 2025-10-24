@@ -1,0 +1,64 @@
+
+.account-panel {
+    display: flex;
+    flex-basis: 37%;
+    flex-flow: column;
+    height: 100vh;
+}
+
+.profile-info-container {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+.profile-info-box {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.profile-photo {
+    margin-top: 1rem;
+    padding: 2rem;
+    width: 7rem;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.edit-btn {
+    padding: .4rem;
+    margin-left: .5rem;
+    border: solid .1rem rgba(134, 10, 87, 0.1);
+    background-color: rgb(235, 89, 145);
+    font-weight: bold;
+    color: white;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: all ease .1s;
+}
+
+.edit-btn:hover {
+    background-color: rgb(197, 58, 111);
+}
+
+.info {
+    padding: .4rem;
+    border: none;
+    border-bottom: solid .1rem rgba(197, 58, 111, .3);
+}
+
+.info:focus {
+    outline: none;
+}
+
+.info-label {
+    color: rgb(165, 165, 165);
+    margin-right: .2rem;
+}
+
+.pink-clickable {
+    color: rgb(235, 89, 145);
+    cursor: pointer;
+}

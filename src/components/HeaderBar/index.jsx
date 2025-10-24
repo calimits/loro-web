@@ -8,11 +8,7 @@ export default function HeaderBar() {
                 <div className="dropDown-menu">
                     <img src={menuIcon} className="menu-icon dropDown-btn"/>
                     <div className="dropDown-content">
-                        <p className="options">Option 1</p>
-                        <p className="options">Option 2</p>
-                        <p className="options">Option 3</p>
-                        <p className="options">Option 4</p>
-                        <p className="options">Option 5</p>
+                        <p className="options">Account</p>
                     </div>
                 </div>
                 <h2 className="app-title">loro-app</h2>

@@ -1,0 +1,16 @@
+
+.back-btn {
+    cursor: pointer;
+    font-weight: bold;
+    padding-right: .4rem;
+    transition: all ease .1s;
+}
+
+.back-btn:hover {
+    transform: scale(1.1);
+}
+
+.cool-bar {
+    border-bottom: solid .1rem rgb(241, 241, 241);
+    box-shadow: 0rem .3rem 1rem rgba(0, 0, 0, .1);
+}
