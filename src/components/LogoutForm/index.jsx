@@ -1,26 +1,10 @@
-import { useNavigate } from "react-router-dom";
+import useLogoutForm from "./hooks/useLogoutForm"
 import "./LogoutForm.css"
-import { userClient } from "../../loro-api-clients/UserClientInstance";
 
 
 export default function LogoutForm() {
-    const navigate = useNavigate();
-    const handleNoBtn = (e) => {
-        e.preventDefault();
-        navigate("/");
-    } 
-
-    const handleYesBtn = async (e) => {
-        e.preventDefault();
-        try {
-            await userClient.logout();
-            navigate("/login");
-        } catch (error) {
-            //manejar error en la visualizacion
-            console.log(error.errType, error.errMessage);
-        }
-    }
-
+    const {logoutErr, handleNoBtn, handleYesBtn} = useLogoutForm();
+    
     return (
         <form className="logout-form">
             <h2 className="login-title">Log out</h2>
@@ -29,6 +13,7 @@ export default function LogoutForm() {
                 <button onClick={handleNoBtn} className="form-btn">No</button>
                 <button onClick={handleYesBtn} className="form-btn">Yes</button>
             </div>
+            {logoutErr ? <p className="small-info-text">An error ourred. Please try again.</p> : null}
         </form>
     )
 }
