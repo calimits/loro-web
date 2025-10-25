@@ -1,4 +1,4 @@
-
+import vd from "./Validators"
 class ValidatorFactory{
     createValidator(val = ""){
         return new Error("Must implement this funciton");

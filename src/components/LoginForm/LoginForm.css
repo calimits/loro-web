@@ -29,6 +29,15 @@
     color: rgb(235, 89, 145);
 }
 
+.link {
+    color: rgb(235, 89, 145);
+    text-decoration: none;
+    margin: 0;
+    margin-bottom: .4rem;
+    padding-left: 0.4rem;
+    font-size: small;
+}
+
 .form-submit-btn {
     padding: .4rem;
     margin-bottom: .7rem;
