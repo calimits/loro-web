@@ -1,6 +1,6 @@
 
 
-.home-view {
+.current-view {
     display: flex;
 }
 
@@ -19,7 +19,7 @@
         display: none;
     }
     
-    .home-view {
+    .current-view {
         display: block;
     }
     .chat-back {
