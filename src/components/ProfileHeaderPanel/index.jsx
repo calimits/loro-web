@@ -10,7 +10,6 @@ export default function AccountHeaderPanel() {
                 <p className="back-btn" onClick={(e) => setCurrentView("home")}>←</p>
                 <h2 className="app-title">Account</h2>
             </div>
-            <input type="text" placeholder="Buscar..." className="search"></input>
         </header>
     )
 }

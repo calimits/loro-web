@@ -22,6 +22,15 @@ class UserClient {
         }
     }
 
+    async getUserByID() {
+        try {
+            const user = await this.#httpHelper.get(`${this.#baseURL}/users/${this.#userID}`);
+            return user;
+        } catch (error) {
+            return null;
+        }
+    }
+
     async signUp(username, email, password) {
         const body = {username, email, password};
         const res = await this.#httpHelper.post(`${this.#baseURL}/users/sign-up`,{body});
@@ -43,6 +52,47 @@ class UserClient {
         const res = await this.#httpHelper.post(`${this.#baseURL}/users/refresh-tokens`, {credentials: 'include'});
         this.#accessToken = res.token;
         this.#userID = res.userID;
+    }
+
+    async putUserName(name) {
+        const body = {
+            userID: this.#userID,
+            username: name
+        }
+
+        try {
+            await this.#httpHelper.put(`${this.#baseURL}/users/update/name/${this.#userID}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}` 
+                },
+                body
+            })
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async putUserEmail(email) {
+
+        const body = {
+            userID: this.#userID,
+            email: email
+        }
+
+        try {
+            await this.#httpHelper.put(`${this.#baseURL}/users/update/email/${this.#userID}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}` 
+                },
+                body
+            })
+        } catch (error) {
+            throw error;
+        } 
+    }
+
+    async putUserDescription(username) {
+        
     }
 } 
 
