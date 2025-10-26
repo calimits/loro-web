@@ -91,8 +91,22 @@ class UserClient {
         } 
     }
 
-    async putUserDescription(username) {
-        
+    async putUserDescription(description) {
+        const body = {
+            userID: this.#userID,
+            description: description
+        }
+
+        try {
+            await this.#httpHelper.put(`${this.#baseURL}/users/update/description/${this.#userID}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}` 
+                },
+                body
+            })
+        } catch (error) {
+            throw error;
+        }
     }
 } 
 

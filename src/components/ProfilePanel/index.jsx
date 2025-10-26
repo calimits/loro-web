@@ -28,7 +28,8 @@ export default function () {
         usernameLength: false,
         email: false,
         emailValidation: false,
-        description: false
+        description: false,
+        descriptionLength: false
     })
 
     useEffect(()=>{
@@ -83,7 +84,19 @@ export default function () {
     }
 
     const saveInfo = async (e) => {
-        
+        e.preventDefault();
+        try {
+            if (userInfo.description.length > 200 ) throw new Error("lengthErr");
+            await userClient.putUserDescription(userInfo.description);
+            setSuccessEdit({...successEdit, description: true});
+            setErrors({...errors, descriptionLength: false, description: false})
+            setTimeout(() => {
+                setSuccessEdit({...successEdit, description: false});
+            }, 800);
+        } catch (error) {
+            if (error.message === 'lengthErr') return setErrors({...errors, descriptionLength: true});
+            setErrors({...errors, description: true});
+        }
     }
 
     if (loading) return <h3>Loading ...</h3>
@@ -105,11 +118,15 @@ export default function () {
                     <input value={userInfo.email} onChange={handleChange} type="text" className="info" id="email"/>
                     <input type="button" value="Save" onClick={saveEmail} className={successEdit.email ? "success-edit" : "edit-btn"}/>
                 </div>
+                {errors.emailValidation ? <p className="small-info-text">Invalid email.</p> : null}
+                {errors.email ? <p className="small-info-text">An error ocurred. Please try again.</p> : null}
                 <div className="profile-info-box">
                     <label className="info-label" htmlFor="description">🛈</label>
                     <input value={userInfo.description} onChange={handleChange} type="text" className="info" id="description"/>
-                    <input type="button" value="Save" className="edit-btn"/>
+                    <input type="button" onClick={saveInfo} value="Save" className={successEdit.description ? "success-edit" : "edit-btn"}/>
                 </div>
+                {errors.descriptionLength ? <p className="small-info-text">Description must have less than 200 characters.</p> : null}
+                {errors.description ? <p className="small-info-text">An error ocurred. Please try again.</p> : null}
                 <div className="profile-info-box">
                     <p className="pink-clickable">Change password</p>
                 </div>
