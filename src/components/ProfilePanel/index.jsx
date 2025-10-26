@@ -1,105 +1,21 @@
 import AccountHeaderPanel from "../ProfileHeaderPanel"
 import "./ProfilePanel.css"
 import profilePic from "../../assets/loro-profile.png"
-import { useEffect } from "react"
-import { userClient } from "../../loro-api-clients/UserClientInstance";
-import { useState } from "react";
-import vd from "../../utils/Validators"
+import useProfile from "./hooks/useProfile";
 
 export default function () {
-    const [userInfo, setUserInfo] = useState({
-        _id: "",
-        username: "", //3-30c
-        profilePhotoURL: "",
-        description: "", //max 200
-        email: ""
-    });
+    const {
+        userInfo,
+        loading, 
+        successEdit,
+        errors, 
+        saveEmail,
+        saveInfo,
+        saveName,
+        handleChange
+    } = useProfile();
 
-    const [loading, setLoading] = useState(true);
-
-    const [successEdit, setSuccessEdit] = useState({
-        username: false,
-        email: false,
-        description: false
-    });
-
-    const [errors, setErrors] = useState({
-        username: false,
-        usernameLength: false,
-        email: false,
-        emailValidation: false,
-        description: false,
-        descriptionLength: false
-    })
-
-    useEffect(()=>{
-        async function getUserInfo() {
-            const user = await userClient.getUserByID();
-            setUserInfo(user);
-            setLoading(false);
-        }
-        getUserInfo();
-    }, []);
-
-    const handleChange = (e) => {
-        setUserInfo({
-            ...userInfo,
-            [e.target.id]: e.target.value
-        })
-    }
-
-    const saveName = async (e) => {
-        e.preventDefault();
-
-        try {
-            if (userInfo.username.length < 3 || userInfo.username.length > 30 ) throw new Error("lengthErr");
-            await userClient.putUserName(userInfo.username);
-            setSuccessEdit({...successEdit, username: true});
-            setErrors({...errors, usernameLength: false, username: false})
-            setTimeout(() => {
-                setSuccessEdit({...successEdit, username: false});
-            }, 800);
-        } catch (error) {
-            if (error.message === 'lengthErr') return setErrors({...errors, usernameLength: true});
-            setErrors({...errors, username: true});
-        }
-    }
-    
-    const saveEmail = async (e) => {
-        e.preventDefault(); 
-
-        try {
-            const emailValidator = new vd.EmailValidator();
-            if (!emailValidator.validate(userInfo.email)) throw new Error("emailValidation");
-            await userClient.putUserEmail(userInfo.email);
-            setSuccessEdit({...successEdit, email: true});
-            setErrors({...errors, email: false, emailValidation: false})
-            setTimeout(() => {
-                setSuccessEdit({...successEdit, email: false});
-            }, 800);
-        } catch (error) {
-            if (error.message === 'emailValidation') return setErrors({...errors, emailValidation: true});
-            setErrors({...errors, email: true});
-        }
-    }
-
-    const saveInfo = async (e) => {
-        e.preventDefault();
-        try {
-            if (userInfo.description.length > 200 ) throw new Error("lengthErr");
-            await userClient.putUserDescription(userInfo.description);
-            setSuccessEdit({...successEdit, description: true});
-            setErrors({...errors, descriptionLength: false, description: false})
-            setTimeout(() => {
-                setSuccessEdit({...successEdit, description: false});
-            }, 800);
-        } catch (error) {
-            if (error.message === 'lengthErr') return setErrors({...errors, descriptionLength: true});
-            setErrors({...errors, description: true});
-        }
-    }
-
-    if (loading) return <h3>Loading ...</h3>
+    if (loading) return <h3 className="account-panel">Loading ...</h3>
 
     return (
         <div className="account-panel ">
