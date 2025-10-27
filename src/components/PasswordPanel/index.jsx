@@ -12,6 +12,7 @@ export default function PasswordPanel() {
         handleChange,
         handleSubmit
     } = usePasswordForm();
+    
     return (
         <div className="password-panel">
             <header className="header-bar cool-bar">
