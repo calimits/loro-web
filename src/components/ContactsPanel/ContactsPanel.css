@@ -1,0 +1,20 @@
+.contacts-panel{
+    display: flex;
+    flex-basis: 37%;
+    flex-flow: column;
+    height: 100vh;
+}
+
+.border-bottom {
+    margin: 0;
+    border-bottom: solid .1rem rgb(224, 224, 224);
+}
+
+.subtitle {
+    margin-left: .3rem;
+    color: gray
+}
+
+.contacts {
+    overflow: auto;
+}

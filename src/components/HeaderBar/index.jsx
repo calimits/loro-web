@@ -22,7 +22,7 @@ export default function HeaderBar() {
                 </div>
                 <h2 className="app-title">loro-app</h2>
             </div>
-            <input type="text" placeholder="Buscar..." className="search"></input>
+            {/*<input type="text" placeholder="Buscar..." className="search"></input>*/}
         </header>
     )
 }

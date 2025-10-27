@@ -7,6 +7,8 @@ import ViewManeger from "../../ViewManager"
 import { CurrentViewProvider } from "../../ViewManager/context/currentViewContext"
 import PasswordPanel from "../../PasswordPanel"
 import AccountPanel from "../../AccountPanel"
+import ContactsPanel from "../../ContactsPanel"
+
 
 export default function CurrentView() {
     return (
@@ -17,6 +19,7 @@ export default function CurrentView() {
                     <View view="profile" element={<ProfilePanel/>}/>
                     <View view="password-panel" element={<PasswordPanel/>}/>
                     <View view="account" element={<AccountPanel/>}/>
+                    <View view="contacts" element={<ContactsPanel/>}/>
                 </ViewManeger>
             </CurrentViewProvider>
             <div className="space-background"></div>

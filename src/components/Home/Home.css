@@ -1,9 +1,30 @@
 
 .home {
+    position: relative;
     display: flex;
     flex-basis: 37%;
     flex-flow: column;
     height: 100vh;
+}
+
+.contacts-btn {
+    position: absolute;
+    font-size: 1.4rem;
+    bottom: 2.5rem;
+    right: 2rem;
+    z-index: 99999;
+    cursor: pointer;
+    padding: .4rem;
+    border: solid .1rem rgba(134, 10, 87, 0.1);
+    background-color: rgb(235, 89, 145);
+    font-weight: bold;
+    color: white;
+    border-radius: 50%;
+    transition: all ease .1s;
+}
+
+.contacts-btn:hover {
+    background-color: rgb(235, 41, 99);
 }
 
 @media (max-width: 560px) {
@@ -14,3 +35,4 @@
         height: 100vh;
     }
 }
+
