@@ -1,9 +1,20 @@
 import "./ContactsPanel.css"
 import { useCurrentView } from "../ViewManager/context/currentViewContext"
 import Contact from "../Contact";
+import { useEffect, useRef } from "react";
+
 
 export default function ContactsPanel() {
     const { setCurrentView } = useCurrentView();
+
+    const contactsRef = useRef();
+
+    useEffect(()=>{
+        console.log(contactsRef)
+        contactsRef.current.addEventListener("scroll", (e)=> {
+            console.log("scroll")
+        })
+    }, [])
 
     return (
         <div className="contacts-panel">
@@ -16,25 +27,8 @@ export default function ContactsPanel() {
             <p className="actions border-bottom">New Chat</p>
             <p className="actions border-bottom">New contact</p>
             <p className="subtitle">Contacts in Loro</p>
-            <div className="contacts">
-                <Contact username={"juan"}/>
-                <Contact username={"roberto"}/>
-                <Contact username={"moco"}/>
-                <Contact username={"juan"}/>
-                <Contact username={"roberto"}/>
-                <Contact username={"moco"}/>
-                <Contact username={"juan"}/>
-                <Contact username={"roberto"}/>
-                <Contact username={"moco"}/>
-                <Contact username={"juan"}/>
-                <Contact username={"roberto"}/>
-                <Contact username={"moco"}/>
-                <Contact username={"juan"}/>
-                <Contact username={"roberto"}/>
-                <Contact username={"moco"}/>
-                <Contact username={"juan"}/>
-                <Contact username={"roberto"}/>
-                <Contact username={"moco"}/>
+            <div ref={contactsRef} className="contacts">
+                
             </div>
         </div>
     )
