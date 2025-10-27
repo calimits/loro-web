@@ -2,6 +2,7 @@ import AccountHeaderPanel from "../ProfileHeaderPanel"
 import "./ProfilePanel.css"
 import profilePic from "../../assets/loro-profile.png"
 import useProfile from "./hooks/useProfile";
+import { useCurrentView } from "../ViewManager/context/currentViewContext";
 
 export default function () {
     const {
@@ -14,6 +15,8 @@ export default function () {
         saveName,
         handleChange
     } = useProfile();
+
+    const {setCurrentView} = useCurrentView();
 
     if (loading) return <h3 className="account-panel">Loading ...</h3>
 
@@ -44,7 +47,7 @@ export default function () {
                 {errors.descriptionLength ? <p className="small-info-text">Description must have less than 200 characters.</p> : null}
                 {errors.description ? <p className="small-info-text">An error ocurred. Please try again.</p> : null}
                 <div className="profile-info-box">
-                    <p className="pink-clickable">Change password</p>
+                    <p className="pink-clickable" onClick={(e)=>setCurrentView("password-panel")}>Change password</p>
                 </div>
             </div>
         </div>

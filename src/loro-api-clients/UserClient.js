@@ -12,7 +12,7 @@ class UserClient {
         this.#accessToken = null;
         this.#userID = null;
     }
-    
+
     async getUserByName(name) {
         try {
             const user = await this.#httpHelper.get(`${this.#baseURL}/users/name/${name}`);
@@ -32,24 +32,24 @@ class UserClient {
     }
 
     async signUp(username, email, password) {
-        const body = {username, email, password};
-        const res = await this.#httpHelper.post(`${this.#baseURL}/users/sign-up`,{body});
+        const body = { username, email, password };
+        const res = await this.#httpHelper.post(`${this.#baseURL}/users/sign-up`, { body });
         return res;
     }
 
     async signIn(username, password) {
-        const body = {username, password};
-        const res = await this.#httpHelper.post(`${this.#baseURL}/users/sign-in`, {body,credentials: 'include'});
+        const body = { username, password };
+        const res = await this.#httpHelper.post(`${this.#baseURL}/users/sign-in`, { body, credentials: 'include' });
         this.#accessToken = res.token;
         this.#userID = res.userID;
     }
 
     async logout() {
-        await this.#httpHelper.post(`${this.#baseURL}/users/logout`, {credentials: 'include'});
+        await this.#httpHelper.post(`${this.#baseURL}/users/logout`, { credentials: 'include' });
     }
 
     async refreshTokens() {
-        const res = await this.#httpHelper.post(`${this.#baseURL}/users/refresh-tokens`, {credentials: 'include'});
+        const res = await this.#httpHelper.post(`${this.#baseURL}/users/refresh-tokens`, { credentials: 'include' });
         this.#accessToken = res.token;
         this.#userID = res.userID;
     }
@@ -60,16 +60,12 @@ class UserClient {
             username: name
         }
 
-        try {
-            await this.#httpHelper.put(`${this.#baseURL}/users/update/name/${this.#userID}`, {
-                headers: {
-                    'Authorization': `Bearer ${this.#accessToken}` 
-                },
-                body
-            })
-        } catch (error) {
-            throw error;
-        }
+        await this.#httpHelper.put(`${this.#baseURL}/users/update/name/${this.#userID}`, {
+            headers: {
+                'Authorization': `Bearer ${this.#accessToken}`
+            },
+            body
+        });
     }
 
     async putUserEmail(email) {
@@ -79,16 +75,12 @@ class UserClient {
             email: email
         }
 
-        try {
-            await this.#httpHelper.put(`${this.#baseURL}/users/update/email/${this.#userID}`, {
-                headers: {
-                    'Authorization': `Bearer ${this.#accessToken}` 
-                },
-                body
-            })
-        } catch (error) {
-            throw error;
-        } 
+        await this.#httpHelper.put(`${this.#baseURL}/users/update/email/${this.#userID}`, {
+            headers: {
+                'Authorization': `Bearer ${this.#accessToken}`
+            },
+            body
+        });
     }
 
     async putUserDescription(description) {
@@ -97,17 +89,27 @@ class UserClient {
             description: description
         }
 
-        try {
-            await this.#httpHelper.put(`${this.#baseURL}/users/update/description/${this.#userID}`, {
-                headers: {
-                    'Authorization': `Bearer ${this.#accessToken}` 
-                },
-                body
-            })
-        } catch (error) {
-            throw error;
-        }
+        await this.#httpHelper.put(`${this.#baseURL}/users/update/description/${this.#userID}`, {
+            headers: {
+                'Authorization': `Bearer ${this.#accessToken}`
+            },
+            body
+        });
     }
-} 
 
-export {UserClient};
+    async putUserPassword(currentPassword, newPassword) {
+        const body = {
+            oldPassword: currentPassword,
+            newPassword: newPassword
+        };
+        const user = await this.getUserByID();
+        await this.#httpHelper.put(`${this.#baseURL}/users/update/password/${user.username}`, {
+            headers: {
+                'Authorization': `Bearer ${this.#accessToken}`
+            },
+            body
+        });
+    }
+}
+
+export { UserClient };

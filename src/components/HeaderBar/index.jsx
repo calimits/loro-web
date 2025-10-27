@@ -11,7 +11,7 @@ export default function HeaderBar() {
                 <div className="dropDown-menu">
                     <img src={menuIcon} className="menu-icon dropDown-btn"/>
                     <div className="dropDown-content">
-                        <p className="options" onClick={(e) => setCurrentView("profile")}>Account</p>
+                        <p className="options" onClick={(e) => setCurrentView("profile")}>Profile</p>
                     </div>
                 </div>
                 <h2 className="app-title">loro-app</h2>
