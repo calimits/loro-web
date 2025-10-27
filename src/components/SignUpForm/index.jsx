@@ -1,5 +1,7 @@
+import { Link } from "react-router-dom";
 import useFormLogic from "./hooks/useFormLogic"
 import "./SignUpForm.css"
+
 
 export default function SignUpForm() {
     const {formData, errors, IsSignedUp, handleChange, handleSubmit} = useFormLogic();
@@ -17,6 +19,7 @@ export default function SignUpForm() {
             {errors.password? <p className="small-info-text">Password must have at least 1 upper letter,
                  1 lower letter, 1 number, one special character (/?@$!%*?&) and at least
                  8 characters total.  </p> : null}
+            <Link to="/login" className="link">Already have an account?</Link>
             <input type="submit" className="form-submit-btn" />
             {IsSignedUp.succesfull ? <p className="small-info-text">Signing up succesfully.</p> : null}
             {IsSignedUp.error ? <p className="small-info-text">An error ocurred. Try again.</p> : null}

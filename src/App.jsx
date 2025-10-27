@@ -5,6 +5,7 @@ import LoginView from "./components/Views/LoginView";
 import LogoutView from "./components/Views/LogoutView";
 import { useAuth } from "./components/AuthContext";
 import { useEffect, useState } from "react";
+import DeleteAccountView from "./components/Views/DeleteAccountView"
 
 function App() {
   const { isAuth, checkAuth } = useAuth();
@@ -28,6 +29,7 @@ function App() {
           <Route path="/sign-up" element={<SignUpView/>}></Route>
           <Route path="/login" element={<LoginView/>}></Route>
           <Route path="/logout" element={<LogoutView/>}></Route>
+          <Route path="/delete-account" element={<DeleteAccountView/>}></Route>
         </Routes>
       </Router>
   );

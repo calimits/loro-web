@@ -110,6 +110,17 @@ class UserClient {
             body
         });
     }
+
+    async deleteUser() {
+        await this.#httpHelper.delete(`${this.#baseURL}/users/${this.#userID}`, {
+            headers: {
+                'Authorization': `Bearer ${this.#accessToken}`
+            },
+            credentials: 'include'
+        });
+        this.#accessToken = null;
+        this.#userID = null;
+    }
 }
 
 export { UserClient };

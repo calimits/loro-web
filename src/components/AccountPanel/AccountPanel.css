@@ -1,0 +1,26 @@
+.account-panel-container{
+    display: flex;
+    flex-basis: 37%;
+    flex-flow: column;
+    height: 100vh;
+}
+
+.options-panel {
+    padding-top: 1rem;
+    display: flex;
+    flex-flow: column;
+}
+
+.actions {
+    margin: 0;
+    padding: .6em;
+    margin-bottom: .2rem;
+    padding-left: 0.4rem;
+    color: gray;
+    cursor: pointer;
+}
+
+.actions:hover {
+    background-color: rgba(151, 151, 151, 0.5);
+    color: white;
+}
