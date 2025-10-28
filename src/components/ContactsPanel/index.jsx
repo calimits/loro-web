@@ -12,11 +12,12 @@ export default function ContactsPanel() {
 
     const defaultStart = cache.get("contacts").start;
     const defaultLimit = cache.get("contacts").limit;
+    const defaultScrollEnd = cache.get("contacts").scrollEnd;
     const isCached = cache.get("contacts").contacts.length > 0;
 
     const [start, setStart] = useState(defaultStart);
     const [limit, setLimit] = useState(defaultLimit);
-    const [scrollEnd, setScrollEnd] = useState(false);
+    const [scrollEnd, setScrollEnd] = useState(defaultScrollEnd);
     const [contacts, setContacts] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -30,7 +31,6 @@ export default function ContactsPanel() {
 
     useEffect(()=>{
         contactsRef.current.addEventListener("scroll", handleScroll);
-
         async function getContacts() {
             setLoading(true);
             const res = await userClient.getUserContacts(start, limit);
@@ -41,7 +41,6 @@ export default function ContactsPanel() {
             setContacts([...contacts, ...res]);
             setLoading(false);
         }
-
         if (!isCached) getContacts();  
         if (isCached) setContacts([...contacts, ...cache.get("contacts").contacts]); 
 
@@ -51,7 +50,13 @@ export default function ContactsPanel() {
         async function getMoreContacts() {
             setLoading(true);
             const res = await userClient.getUserContacts(start, limit);
-            if (res.length === 0) return setLoading(false);
+            if (res.length === 0) {
+                setLoading(false);
+                cache.set("contacts", {...cache.get("contacts"), scrollEnd: true});
+                return
+            }
+            const currentContacts = cache.get("contacts").contacts;
+            cache.set("contacts", {start: start+res.length, limit: limit, contacts: [...currentContacts,...res]});
             setStart(start+res.length);
             setContacts([...contacts, ...res]);
             setScrollEnd(false);
