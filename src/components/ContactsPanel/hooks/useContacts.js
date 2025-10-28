@@ -22,14 +22,12 @@ export default function useContacts() {
         if (res.length === 0) {
             setLoading(false);
             cache.set("contacts", { ...cache.get("contacts"), isAllFetched: true });
-            contactsRef.current.removeEventListener("scroll", handleScroll);
             return
         }
         const currentContacts = cache.get("contacts").contacts;
         cache.set("contacts", { start: start + res.length, limit: limit, contacts: [...currentContacts, ...res] });
         setStart(start + res.length);
         setContacts([...contacts, ...res]);
-        setScrollEnd(false);
         setLoading(false);
     }
 
@@ -40,8 +38,6 @@ export default function useContacts() {
             setLoading(true);
             const res = await userClient.getUserContacts(start, limit);
             cache.set("contacts", { start: start + res.length, limit: limit, contacts: [...res] });
-            console.log(cache.get("contacts"))
-            console.log(isCached)
             setStart(start + res.length);
             setContacts([...contacts, ...res]);
             setLoading(false);

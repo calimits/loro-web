@@ -145,6 +145,17 @@ class UserClient {
 
         return contacts;
     }
+
+    async deleteContacts(contactIDs) {
+        const body = { contactIDs };
+
+        await this.#httpHelper.delete(`${this.#baseURL}/users/contacts/${this.#userID}`, {
+            headers: {
+                'Authorization': `Bearer ${this.#accessToken}`
+            },
+            body
+        });
+    }
 }
 
 export { UserClient };

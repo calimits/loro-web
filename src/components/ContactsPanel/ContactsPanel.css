@@ -27,4 +27,5 @@
 
 .delete-btn {
     cursor: pointer;
+    margin-right: .2rem;
 }

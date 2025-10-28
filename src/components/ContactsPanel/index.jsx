@@ -2,12 +2,30 @@ import "./ContactsPanel.css";
 import { useCurrentView } from "../ViewManager/context/currentViewContext";
 import Contact from "../Contact";
 import useContacts from "./hooks/useContacts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { userClient } from "../../loro-api-clients/UserClientInstance";
 
 export default function ContactsPanel() {
     const { setCurrentView } = useCurrentView();
-    const { contacts,loading, contactsRef } = useContacts();
-    const [edit, setEdit] = useState(true);
+    const { contacts, loading, contactsRef } = useContacts();
+    const [edit, setEdit] = useState(false);
+    const [selected, setSelected] = useState([]);
+    const [error, setError] = useState(false);
+
+    const handleCancelClick = (e) => {
+        setEdit(false);
+        setSelected([]);
+
+    }
+
+    const handleDeleteClick = async (e) => {
+        try {
+            await userClient.deleteContacts(selected);
+            setEdit(false);
+        } catch (error) {
+            setError(true);
+        }
+    }
 
     return (
         <div className="contacts-panel">
@@ -17,16 +35,18 @@ export default function ContactsPanel() {
                     <h2 className="app-title">Contacts</h2>
                 </div>
                 <div className="display-flex">
-                    {edit ? <p className="delete-btn small-info-text">Cancel</p> : null}
-                    {edit ? <p className="delete-btn small-info-text">Delete</p> : null}
+                    {edit ? <p className="delete-btn small-info-text" onClick={handleCancelClick}>Cancel</p> : null}
+                    {edit ? <p className="delete-btn small-info-text" onClick={handleDeleteClick}>Delete</p> : null}
                 </div>
             </header>
             <p className="actions border-bottom">New Chat</p>
             <p onClick={(e) => setCurrentView("add-contact")} className="actions border-bottom">New contact</p>
             <p className="subtitle">Contacts in Loro</p>
             <div ref={contactsRef} className="contacts">
-                {contacts.map((contact, index) => (<Contact key={index} edit={edit} username={contact.username} />))}
+                {contacts.map((contact, index) => (<Contact key={index} setEdit={setEdit} setSelected={setSelected}
+                                                        edit={edit} username={contact.username} id={contact.id} />))}
                 {loading ? <p className="small-info-text">Loading</p> : null}
+                {loading ? <p className="small-info-text">An error ocurred. We couldn't delete ypu contacts. Please try agaian.</p> : null}
             </div>
         </div>
     )
