@@ -135,6 +135,16 @@ class UserClient {
             body
         });
     }
+
+    async getUserContacts(start = 0, limit = 50) {
+        const contacts = await this.#httpHelper.get(`${this.#baseURL}/users/contacts/${this.#userID}?start=${start}&limit=${limit}`, {
+            headers: {
+                'Authorization': `Bearer ${this.#accessToken}`
+            }
+        });
+
+        return contacts;
+    }
 }
 
 export { UserClient };

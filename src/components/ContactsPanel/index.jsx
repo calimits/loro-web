@@ -1,20 +1,59 @@
-import "./ContactsPanel.css"
-import { useCurrentView } from "../ViewManager/context/currentViewContext"
+import "./ContactsPanel.css";
+import { useCurrentView } from "../ViewManager/context/currentViewContext";
 import Contact from "../Contact";
-import { useEffect, useRef } from "react";
-
+import { useEffect, useRef, useState } from "react";
+import { userClient } from "../../loro-api-clients/UserClientInstance";
+import cache from "../../utils/chache-ram";
 
 export default function ContactsPanel() {
     const { setCurrentView } = useCurrentView();
+    
+    const contactsRef = useRef();
 
-    /*const contactsRef = useRef();
+    const [start, setStart] = useState(0);
+    const [limit, setLimit] = useState(50);
+    const [scrollEnd, setScrollEnd] = useState(false);
+    const [contacts, setContacts] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const handleScroll = (e) => {
+        const div = contactsRef.current;
+        const boolScroll = div.scrollTop + div.clientHeight >= div.scrollHeight;
+        if (boolScroll) {
+            setScrollEnd(true);
+        }
+    }
 
     useEffect(()=>{
-        console.log(contactsRef)
-        contactsRef.current.addEventListener("scroll", (e)=> {
-            console.log("scroll")
-        })
-    }, [])*/
+        contactsRef.current.addEventListener("scroll", handleScroll);
+
+        async function getContacts() {
+            setLoading(true);
+            const res = await userClient.getUserContacts(start, limit);
+            setStart(start+res.length);
+            setContacts([...contacts, ...res]);
+            setLoading(false);
+        }
+
+        getContacts();  
+        
+
+    }, []);
+
+    useEffect(()=>{
+        async function getMoreContacts() {
+            setLoading(true);
+            const res = await userClient.getUserContacts(start, limit);
+            if (res.length === 0) return setLoading(false);
+            setStart(start+res.length);
+            setContacts([...contacts, ...res]);
+            setScrollEnd(false);
+            setLoading(false);
+        }
+
+        getMoreContacts(); 
+        
+    }, [scrollEnd]);
 
     return (
         <div className="contacts-panel">
@@ -27,7 +66,9 @@ export default function ContactsPanel() {
             <p className="actions border-bottom">New Chat</p>
             <p onClick={(e)=>setCurrentView("add-contact")} className="actions border-bottom">New contact</p>
             <p className="subtitle">Contacts in Loro</p>
-            <div className="contacts"> 
+            <div ref={contactsRef} className="contacts"> 
+                {contacts.map((contact, index)=>(<Contact key={index} username={contact.username}/>))}
+                {loading ? <p className="small-info-text">Loading</p> : null}
             </div>
         </div>
     )
