@@ -18,3 +18,13 @@
 .contacts {
     overflow: auto;
 }
+
+.display-flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-btn {
+    cursor: pointer;
+}
