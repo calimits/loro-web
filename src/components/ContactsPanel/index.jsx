@@ -7,11 +7,15 @@ import cache from "../../utils/chache-ram";
 
 export default function ContactsPanel() {
     const { setCurrentView } = useCurrentView();
-    
+
     const contactsRef = useRef();
 
-    const [start, setStart] = useState(0);
-    const [limit, setLimit] = useState(50);
+    const defaultStart = cache.get("contacts").start;
+    const defaultLimit = cache.get("contacts").limit;
+    const isCached = cache.get("contacts").contacts.length > 0;
+
+    const [start, setStart] = useState(defaultStart);
+    const [limit, setLimit] = useState(defaultLimit);
     const [scrollEnd, setScrollEnd] = useState(false);
     const [contacts, setContacts] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -30,13 +34,16 @@ export default function ContactsPanel() {
         async function getContacts() {
             setLoading(true);
             const res = await userClient.getUserContacts(start, limit);
+            cache.set("contacts", {start: start+res.length, limit: limit, contacts: [...res]});
+            console.log(cache.get("contacts"))
+            console.log(isCached)
             setStart(start+res.length);
             setContacts([...contacts, ...res]);
             setLoading(false);
         }
 
-        getContacts();  
-        
+        if (!isCached) getContacts();  
+        if (isCached) setContacts([...contacts, ...cache.get("contacts").contacts]); 
 
     }, []);
 
