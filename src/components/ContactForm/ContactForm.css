@@ -1,0 +1,7 @@
+
+.contact-form-container {
+    display: flex;
+    flex-basis: 37%;
+    flex-flow: column;
+    height: 100vh;
+}

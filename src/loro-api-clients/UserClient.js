@@ -121,6 +121,20 @@ class UserClient {
         this.#accessToken = null;
         this.#userID = null;
     }
+
+    async addContact2User(name) {
+        const body = {
+            userID: this.#userID,
+            contactName: name
+        };
+
+        await this.#httpHelper.post(`${this.#baseURL}/users/add-contact/${this.#userID}`, {
+            headers: {
+                'Authorization': `Bearer ${this.#accessToken}`
+            },
+            body
+        });
+    }
 }
 
 export { UserClient };
