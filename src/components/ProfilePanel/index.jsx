@@ -1,6 +1,6 @@
 import AccountHeaderPanel from "../ProfileHeaderPanel"
 import "./ProfilePanel.css"
-import profilePic from "../../assets/loro-profile.png"
+import profilePic from "../../assets/contact-pic.png"
 import useProfile from "./hooks/useProfile";
 import { useCurrentView } from "../ViewManager/context/currentViewContext";
 

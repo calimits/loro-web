@@ -1,4 +1,4 @@
-import profilePpic from "../../assets/loro-profile.png";
+import profilePpic from "../../assets/chat-pic.png";
 import "./Chat.css"
 
 export default function ChatPreview() {

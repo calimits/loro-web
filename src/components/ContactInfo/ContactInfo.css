@@ -1,0 +1,12 @@
+
+
+.contact-info-container {
+    display: flex;
+    flex-basis: 37%;
+    flex-flow: column;
+    height: 100vh;
+}
+
+.min-width-8rem {
+    min-width: 8rem;
+}
