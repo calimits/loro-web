@@ -15,6 +15,26 @@ export default function useContacts() {
     const [limit, setLimit] = useState(defaultLimit);
     const [contacts, setContacts] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [edit, setEdit] = useState(false);
+    const [selected, setSelected] = useState([]);
+    const [error, setError] = useState(false);
+
+    const handleCancelClick = (e) => {
+        setEdit(false);
+        setSelected([]);
+    }
+
+    const handleDeleteClick = async (e) => {
+        try {
+            await userClient.deleteContacts(selected);
+            const remainContacts = contacts.filter((contact => !selected.includes(contact.id)));
+            setContacts(remainContacts);
+            cache.set("contacts", {...cache.get('contacts'), contacts: [...remainContacts]});
+            setEdit(false);
+        } catch (error) {
+            setError(true);
+        }
+    }
 
     const getContacts = async (e) => {
         setLoading(true);
@@ -50,6 +70,13 @@ export default function useContacts() {
     return {
         contacts,
         loading, 
-        contactsRef
+        contactsRef,
+        edit, 
+        setEdit, 
+        error,
+        selected,
+        setSelected,
+        handleCancelClick,
+        handleDeleteClick
     }
 }

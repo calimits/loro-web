@@ -2,31 +2,20 @@ import "./ContactsPanel.css";
 import { useCurrentView } from "../ViewManager/context/currentViewContext";
 import Contact from "../Contact";
 import useContacts from "./hooks/useContacts";
-import { useEffect, useState } from "react";
-import { userClient } from "../../loro-api-clients/UserClientInstance";
 
 export default function ContactsPanel() {
     const { setCurrentView } = useCurrentView();
-    const { contacts, loading, contactsRef } = useContacts();
-    const [edit, setEdit] = useState(false);
-    const [selected, setSelected] = useState([]);
-    const [error, setError] = useState(false);
-
-    const handleCancelClick = (e) => {
-        setEdit(false);
-        setSelected([]);
-
-    }
-
-    const handleDeleteClick = async (e) => {
-        try {
-            await userClient.deleteContacts(selected);
-            setEdit(false);
-        } catch (error) {
-            setError(true);
-        }
-    }
-
+    const { contacts, 
+        loading, 
+        contactsRef,
+        edit, 
+        setEdit, 
+        error,
+        selected,
+        setSelected,
+        handleCancelClick,
+        handleDeleteClick } = useContacts();
+    
     return (
         <div className="contacts-panel">
             <header className="header-bar cool-bar">
