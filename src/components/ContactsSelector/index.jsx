@@ -19,7 +19,7 @@ export default function ContactsSelector() {
     const handleNextClick = (e) => {
         cache.set("chat-members", [...selected, userClient.getUserID()]);
         console.log(cache.get("chat-members"));
-        setCurrentView("New Chat");
+        setCurrentView("new-chat");
     }
 
     useEffect(() => setEdit(true), []);

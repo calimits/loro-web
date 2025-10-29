@@ -11,6 +11,7 @@ import ContactsPanel from "../../ContactsPanel"
 import ContactForm from "../../ContactForm"
 import ContactInfo from "../../ContactInfo"
 import ContactsSelector from "../../ContactsSelector"
+import ChatForm from "../../ChatForm"
 
 
 
@@ -27,6 +28,7 @@ export default function CurrentView() {
                     <View view="add-contact" element={<ContactForm/>}/>
                     <View view="contact-info" element={<ContactInfo/>}/>
                     <View view="select-contacts" element={<ContactsSelector/>}/>
+                    <View view="new-chat" element={<ChatForm/>}/>
                 </ViewManeger>
             </CurrentViewProvider>
             <div className="space-background"></div>
