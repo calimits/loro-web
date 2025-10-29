@@ -2,7 +2,7 @@ import "./ContactInfo.css"
 import profilePic from "../../assets/contact-pic.png";
 import { useCurrentView } from "../ViewManager/context/currentViewContext";
 import { useEffect, useState } from "react";
-import { userClient } from "../../loro-api-clients/UserClientInstance"
+import { loroClient } from "../../loro-api-clients/loroClientInstance"
 import cache from "../../utils/chache-ram";
 
 export default function ContactInfo() {
@@ -16,7 +16,7 @@ export default function ContactInfo() {
 
     useEffect(()=>{
         async function fetchData() {
-            const info = await userClient.getUserByName(cache.get("contact-selected"));
+            const info = await loroClient.getUserByName(cache.get("contact-selected"));
             setContact({...info});
             cache.set(`contact-${cache.get("contact-selected")}`, info);
         }

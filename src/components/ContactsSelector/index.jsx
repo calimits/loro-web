@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import useContacts from "../ContactsPanel/hooks/useContacts";
 import Contact from "../Contact";
 import cache from "../../utils/chache-ram";
-import { userClient } from "../../loro-api-clients/UserClientInstance";
+import { loroClient } from "../../loro-api-clients/loroClientInstance";
 
 export default function ContactsSelector() {
     const { setCurrentView } = useCurrentView();
@@ -17,7 +17,7 @@ export default function ContactsSelector() {
         setSelected } = useContacts();
 
     const handleNextClick = (e) => {
-        cache.set("chat-members", [...selected, userClient.getUserID()]);
+        cache.set("chat-members", [...selected, loroClient.getUserID()]);
         console.log(cache.get("chat-members"));
         setCurrentView("new-chat");
     }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { userClient } from "../../../loro-api-clients/UserClientInstance";
+import { loroClient } from "../../../loro-api-clients/loroClientInstance";
 
 
 export default function useContactForm() {
@@ -16,7 +16,7 @@ export default function useContactForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await userClient.addContact2User(contactName);
+            await loroClient.addContact2User(contactName);
             setSuccess(true);
         } catch (error) {
             setErrors(true);

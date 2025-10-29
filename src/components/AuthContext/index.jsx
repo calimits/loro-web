@@ -1,12 +1,12 @@
 import { createContext, useContext, useState } from "react";
-import { userClient } from "../../loro-api-clients/UserClientInstance";
+import { loroClient } from "../../loro-api-clients/loroClientInstance";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
     const [isAuth, setIsAuth] = useState(false);
     const checkAuth = async () => {
         try {
-            await userClient.refreshTokens();
+            await loroClient.refreshTokens();
             setIsAuth(true);
         } catch (error) {
             setIsAuth(false);

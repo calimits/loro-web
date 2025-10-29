@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { userClient } from "../../../loro-api-clients/UserClientInstance";
+import { loroClient } from "../../../loro-api-clients/loroClientInstance";
 
 export default function useForm() {
     const [formData, setFormData] = useState({
@@ -26,7 +26,7 @@ export default function useForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await userClient.signIn(formData.username, formData.password);
+            await loroClient.signIn(formData.username, formData.password);
             setIsSignedIn({ ...IsSignedIn, succesfull: true, error: false, credentialsErr: false });
             setTimeout(() => {
                 navigate("/");

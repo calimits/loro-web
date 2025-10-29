@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { userClient } from "../../../loro-api-clients/UserClientInstance";
+import { loroClient } from "../../../loro-api-clients/loroClientInstance";
 import vd from "../../../utils/Validators";
 
 
@@ -32,7 +32,7 @@ export default function usePasswordForm() {
         if (!validation) return setErrors({...errors, invalidErr: true});
 
         try {
-            await userClient.putUserPassword(formData.currentPassword, formData.newPassword);
+            await loroClient.putUserPassword(formData.currentPassword, formData.newPassword);
             setSuccess(true);
             setErrors({invalidErr: false, httpErr: false, matchErr: false});
         } catch (error) {

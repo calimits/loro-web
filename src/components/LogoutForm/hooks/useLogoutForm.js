@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { userClient } from "../../../loro-api-clients/UserClientInstance";
+import { loroClient } from "../../../loro-api-clients/loroClientInstance";
 import { useState } from "react";
 
 
@@ -15,7 +15,7 @@ export default function useLogoutForm() {
     const handleYesBtn = async (e) => {
         e.preventDefault();
         try {
-            await userClient.logout();
+            await loroClient.logout();
             navigate("/login");
         } catch (error) {
             setLogoutErr(true);

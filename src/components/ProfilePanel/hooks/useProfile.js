@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import cache from "../../../utils/chache-ram";
-import { userClient } from "../../../loro-api-clients/UserClientInstance";
+import { loroClient } from "../../../loro-api-clients/loroClientInstance";
 import vd from "../../../utils/Validators";
 
 export default function useProfile() {
@@ -31,7 +31,7 @@ export default function useProfile() {
 
     useEffect(()=>{
         async function getUserInfo() {
-            const user = await userClient.getUserByID();
+            const user = await loroClient.getUserByID();
             setUserInfo(user);
             cache.set("userInfo", user);
             setLoading(false);
@@ -57,7 +57,7 @@ export default function useProfile() {
 
         try {
             if (userInfo.username.length < 3 || userInfo.username.length > 30 ) throw new Error("lengthErr");
-            await userClient.putUserName(userInfo.username);
+            await loroClient.putUserName(userInfo.username);
             setSuccessEdit({...successEdit, username: true});
             cache.set("userInfo", userInfo);
             setErrors({...errors, usernameLength: false, username: false})
@@ -76,7 +76,7 @@ export default function useProfile() {
         try {
             const emailValidator = new vd.EmailValidator();
             if (!emailValidator.validate(userInfo.email)) throw new Error("emailValidation");
-            await userClient.putUserEmail(userInfo.email);
+            await loroClient.putUserEmail(userInfo.email);
             setSuccessEdit({...successEdit, email: true});
             cache.set("userInfo", userInfo);
             setErrors({...errors, email: false, emailValidation: false})
@@ -93,7 +93,7 @@ export default function useProfile() {
         e.preventDefault();
         try {
             if (userInfo.description.length > 200 ) throw new Error("lengthErr");
-            await userClient.putUserDescription(userInfo.description);
+            await loroClient.putUserDescription(userInfo.description);
             setSuccessEdit({...successEdit, description: true});
             cache.set("userInfo", userInfo);
             setErrors({...errors, descriptionLength: false, description: false})

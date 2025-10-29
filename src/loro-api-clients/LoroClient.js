@@ -1,7 +1,7 @@
 import { httpHelper } from "./HttpHelperInstance";
 
 
-class UserClient {
+class LoroClient {
     #httpHelper = httpHelper;
     #baseURL;
     #accessToken;
@@ -162,4 +162,4 @@ class UserClient {
     }
 }
 
-export { UserClient };
+export { LoroClient };

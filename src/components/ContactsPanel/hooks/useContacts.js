@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { userClient } from "../../../loro-api-clients/UserClientInstance";
+import { loroClient } from "../../../loro-api-clients/loroClientInstance";
 import cache from "../../../utils/chache-ram";
 import useInfiniteScroll from "../../../custom-hooks/useInfiniteScroll";
 
@@ -24,7 +24,7 @@ export default function useContacts() {
 
     const handleDeleteClick = async (e) => {
         try {
-            await userClient.deleteContacts(selected);
+            await loroClient.deleteContacts(selected);
             const remainContacts = contacts.filter((contact => !selected.includes(contact.id)));
             setContacts(remainContacts);
             cache.set("contacts", {...cache.get('contacts'), contacts: [...remainContacts]});
@@ -37,7 +37,7 @@ export default function useContacts() {
     useEffect(() => {
         async function getContacts() {
             setLoading(true);
-            const res = await userClient.getUserContacts(start, limit);
+            const res = await loroClient.getUserContacts(start, limit);
             cache.set("contacts", { start: start + res.length, limit: limit, contacts: [...res] });
             setStart(start + res.length);
             setContacts([...contacts, ...res]);

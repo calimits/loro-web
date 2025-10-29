@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 //import { ValidatorFormFactory } from "../../../../../../certificate-printer/certificate-printer-web/src/helpers/ValidatorFactory";
 import { ValidatorFormFactory } from "../../../utils/ValidatorFactory" 
 import vd from "../../../utils/Validators";
-import { userClient } from "../../../loro-api-clients/UserClientInstance";
+import { loroClient } from "../../../loro-api-clients/loroClientInstance";
 
 
 export default function useFormLogic() {
@@ -45,13 +45,13 @@ export default function useFormLogic() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const duplicateUser = await userClient.getUserByName(formData.username);
+            const duplicateUser = await loroClient.getUserByName(formData.username);
             if (duplicateUser) {
                 setErrors({ ...errors, duplicateName: true })
                 setIsSignedUp({ ...IsSignedUp, error: true });
                 return;
             };
-            const res = await userClient.signUp(formData.username, formData.email, formData.password);
+            const res = await loroClient.signUp(formData.username, formData.email, formData.password);
             setIsSignedUp({ ...IsSignedUp, succesfull: true, error: false });
             setErrors({ ...errors, duplicateEmail: false, duplicateName: false });
             setTimeout(() => {
