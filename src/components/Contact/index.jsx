@@ -19,12 +19,18 @@ export default function Contact({username, id, edit, setEdit, setSelected}) {
   }
 
   const handleCheck = (e) => {
-    setSelected((selected) => [...selected, id]);
+    if (e.target.checked) setSelected((selected) => [...selected, id]);
+    if (!e.target.checked) setSelected((selected) => {
+      const filtered = selected.filter(el => el!==id);
+      return [...filtered];
+    });
   }
 
   const handleClick = (e) => {
-    cache.set(`contact-selected`, username);
-    setCurrentView("contact-info")
+    if (edit === false) {
+      cache.set(`contact-selected`, username);
+      setCurrentView("contact-info")
+    }
   }
   
   

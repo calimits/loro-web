@@ -1,0 +1,11 @@
+{showForm ? (<div className="profile-info-container">
+                <img src={chatPic} alt="Profile Photo" className="profile-photo" />
+                <div className="profile-info-box">
+                    <label className="info-label" htmlFor="username">@</label>
+                    <input type="text" className="info min-width-8rem" id="username" />
+                </div>
+                <div className="profile-info-box">
+                    <label className="info-label" htmlFor="description">🛈</label>
+                    <input type="text" className="info min-width-8rem" id="description" />
+                </div>
+            </div>) : null}

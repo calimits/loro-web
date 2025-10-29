@@ -7,7 +7,6 @@ export default function ContactsPanel() {
     const { setCurrentView } = useCurrentView();
     const { contacts, 
         loading, 
-        contactsRef,
         edit, 
         setEdit, 
         error,
@@ -28,10 +27,10 @@ export default function ContactsPanel() {
                     {edit ? <p className="delete-btn small-info-text" onClick={handleDeleteClick}>Delete</p> : null}
                 </div>
             </header>
-            <p className="actions border-bottom">New Chat</p>
+            <p className="actions border-bottom" onClick={e=>setCurrentView("select-contacts")}>New Chat</p>
             <p onClick={(e) => setCurrentView("add-contact")} className="actions border-bottom">New contact</p>
             <p className="subtitle">Contacts in Loro</p>
-            <div ref={contactsRef} className="contacts">
+            <div className="contacts">
                 {contacts.map((contact, index) => (<Contact key={index} setEdit={setEdit} setSelected={setSelected}
                                                         edit={edit} username={contact.username} id={contact.id} />))}
                 {loading ? <p className="small-info-text">Loading</p> : null}

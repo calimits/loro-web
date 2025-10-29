@@ -10,16 +10,16 @@
 .contacts-btn {
     position: absolute;
     font-size: 1.4rem;
-    bottom: 2.5rem;
+    bottom: 1rem;
     right: 2rem;
     z-index: 99999;
     cursor: pointer;
-    padding: .4rem;
+    padding: .5rem;
+    width: 3rem;
     border: solid .1rem rgba(134, 10, 87, 0.1);
     background-color: rgb(235, 89, 145);
-    font-weight: bold;
     color: white;
-    border-radius: 50%;
+    border-radius: 1rem;
     transition: all ease .1s;
 }
 

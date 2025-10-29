@@ -10,6 +10,8 @@ import AccountPanel from "../../AccountPanel"
 import ContactsPanel from "../../ContactsPanel"
 import ContactForm from "../../ContactForm"
 import ContactInfo from "../../ContactInfo"
+import ContactsSelector from "../../ContactsSelector"
+
 
 
 export default function CurrentView() {
@@ -24,6 +26,7 @@ export default function CurrentView() {
                     <View view="contacts" element={<ContactsPanel/>}/>
                     <View view="add-contact" element={<ContactForm/>}/>
                     <View view="contact-info" element={<ContactInfo/>}/>
+                    <View view="select-contacts" element={<ContactsSelector/>}/>
                 </ViewManeger>
             </CurrentViewProvider>
             <div className="space-background"></div>

@@ -9,4 +9,5 @@
 
 .min-width-8rem {
     min-width: 8rem;
+    overflow-x: hidden;
 }
