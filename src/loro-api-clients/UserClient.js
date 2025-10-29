@@ -13,6 +13,10 @@ class UserClient {
         this.#userID = null;
     }
 
+    getUserID() {
+        return this.#userID;
+    }
+
     async getUserByName(name) {
         try {
             const user = await this.#httpHelper.get(`${this.#baseURL}/users/name/${name}`);

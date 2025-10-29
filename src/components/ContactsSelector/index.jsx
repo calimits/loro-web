@@ -1,12 +1,13 @@
 import { useCurrentView } from "../ViewManager/context/currentViewContext"
 import "./ContactsSelector.css"
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useContacts from "../ContactsPanel/hooks/useContacts";
 import Contact from "../Contact";
+import cache from "../../utils/chache-ram";
+import { userClient } from "../../loro-api-clients/UserClientInstance";
 
 export default function ContactsSelector() {
     const { setCurrentView } = useCurrentView();
-    const [showForm, setShowForm] = useState(false);
     const { contacts,
         loading,
         contactsRef,
@@ -15,9 +16,13 @@ export default function ContactsSelector() {
         selected,
         setSelected } = useContacts();
 
-    useEffect(() => {
-        setEdit(true);
-    }, [])
+    const handleNextClick = (e) => {
+        cache.set("chat-members", [...selected, userClient.getUserID()]);
+        console.log(cache.get("chat-members"));
+        setCurrentView("New Chat");
+    }
+
+    useEffect(() => setEdit(true), []);
 
     useEffect(() => { console.log(selected) }, [selected])
 
@@ -35,7 +40,7 @@ export default function ContactsSelector() {
                     {loading ? <p className="small-info-text">Loading</p> : null}
                     {loading ? <p className="small-info-text">An error ocurred. We couldn't delete ypu contacts. Please try agaian.</p> : null}
                 </div>
-                <button onClick={(e) => setCurrentView("contacts")} className="contacts-btn">➜</button>
+                <button onClick={handleNextClick} className="contacts-btn">➜</button>
         </div>
     )
 }
