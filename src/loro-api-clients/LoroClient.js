@@ -168,32 +168,20 @@ class LoroClient {
     }
 
     //CHAT ENDPOINTS FUNCTIONS
-    async postChat(name, info, memberIDs) {
-        const chatUsers = [];
-        memberIDs.forEach(id => {
-            chatUsers.push({
-                userID: id,
-                isAdmin: id === this.#userID,
-                hasArchivedThisChat: false
-            })
-        });
-
+    async postChat(chat) {
         const body = {
             userID: this.#userID,
-            chat: {
-                name: name,
-                description: info,
-                lastUpdated: new Date().toISOString(),
-                chatUsers
-            }
+            chat
         };
 
-        await this.#httpHelper.post(`${this.#baseURL}/chats`, {
+        const res = await this.#httpHelper.post(`${this.#baseURL}/chats`, {
             headers: {
                 'Authorization': `Bearer ${this.#accessToken}`
             },
             body
         });
+
+        return res;
     }
 }
 

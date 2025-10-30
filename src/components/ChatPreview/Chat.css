@@ -49,11 +49,7 @@
 }
 
 .highlighted{
-    background-color: rgb(240, 139, 189);
-    padding: .1rem;
-    padding-left: .2rem;
-    padding-right: .2rem;
-    border-radius: 50%;
-    color: white;
+    color: rgb(240, 139, 189);
+    padding: .2rem;
     font-weight: bold;
 }
