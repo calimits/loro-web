@@ -18,13 +18,10 @@ export default function ContactsSelector() {
 
     const handleNextClick = (e) => {
         cache.set("chat-members", [...selected, loroClient.getUserID()]);
-        console.log(cache.get("chat-members"));
         setCurrentView("new-chat");
     }
 
     useEffect(() => setEdit(true), []);
-
-    useEffect(() => { console.log(selected) }, [selected])
 
     return (
         <div className="chat-form-container">

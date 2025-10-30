@@ -1,3 +1,4 @@
+import cache from "../utils/chache-ram";
 import { httpHelper } from "./HttpHelperInstance";
 
 
@@ -13,6 +14,7 @@ class LoroClient {
         this.#userID = null;
     }
 
+    //USER ENDPOINTS FUNCTIONS
     getUserID() {
         return this.#userID;
     }
@@ -46,6 +48,8 @@ class LoroClient {
         const res = await this.#httpHelper.post(`${this.#baseURL}/users/sign-in`, { body, credentials: 'include' });
         this.#accessToken = res.token;
         this.#userID = res.userID;
+        cache.set("acces-token", res.token);
+        cache.set("user-ID", res.userID);
     }
 
     async logout() {
@@ -56,6 +60,8 @@ class LoroClient {
         const res = await this.#httpHelper.post(`${this.#baseURL}/users/refresh-tokens`, { credentials: 'include' });
         this.#accessToken = res.token;
         this.#userID = res.userID;
+        cache.set("acces-token", res.token);
+        cache.set("user-ID", res.userID);
     }
 
     async putUserName(name) {
@@ -154,6 +160,35 @@ class LoroClient {
         const body = { contactIDs };
 
         await this.#httpHelper.delete(`${this.#baseURL}/users/contacts/${this.#userID}`, {
+            headers: {
+                'Authorization': `Bearer ${this.#accessToken}`
+            },
+            body
+        });
+    }
+
+    //CHAT ENDPOINTS FUNCTIONS
+    async postChat(name, info, memberIDs) {
+        const chatUsers = [];
+        memberIDs.forEach(id => {
+            chatUsers.push({
+                userID: id,
+                isAdmin: id === this.#userID,
+                hasArchivedThisChat: false
+            })
+        });
+
+        const body = {
+            userID: this.#userID,
+            chat: {
+                name: name,
+                description: info,
+                lastUpdated: new Date().toISOString(),
+                chatUsers
+            }
+        };
+
+        await this.#httpHelper.post(`${this.#baseURL}/chats`, {
             headers: {
                 'Authorization': `Bearer ${this.#accessToken}`
             },
