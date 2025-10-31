@@ -31,8 +31,8 @@ export default function CurrentView() {
                     <View view="new-chat" element={<ChatForm/>}/>
                 </ViewManeger>
             </CurrentViewProvider>
-            <div className="space-background"></div>
-            {/*<Chat/>*/}
+            {/*<div className="space-background"></div>*/}
+            <Chat/>
         </div>
     )
 }

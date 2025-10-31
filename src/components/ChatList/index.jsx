@@ -44,9 +44,7 @@ export default function ChatList() {
         }
     };
 
-
     useInfiniteScroll({ scrollEnd: cache.get("chats").isAllFetched }, getChats, listRef)
-
 
     useEffect(() => {
         async function fetchData() {
