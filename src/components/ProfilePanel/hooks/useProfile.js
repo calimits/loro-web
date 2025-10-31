@@ -26,15 +26,25 @@ export default function useProfile() {
         email: false,
         emailValidation: false,
         description: false,
-        descriptionLength: false
+        descriptionLength: false,
+        fetch: false
     })
 
-    useEffect(()=>{
-        async function getUserInfo() {
+    const fetchData = async (e) => {
+        try {
             const user = await loroClient.getUserByID();
             setUserInfo(user);
             cache.set("userInfo", user);
             setLoading(false);
+            setErrors({...errors, fetch: false});
+        } catch (error) {
+            setErrors({...errors, fetch: true});
+        }
+    }
+
+    useEffect(()=>{
+        async function getUserInfo() {
+            await fetchData();
         }
         if (cache.has("userInfo")) {
             setUserInfo(cache.get("userInfo"));
@@ -114,6 +124,7 @@ export default function useProfile() {
         saveEmail,
         saveInfo,
         saveName,
-        handleChange
+        handleChange,
+        fetchData
     }
 }

@@ -19,6 +19,6 @@ export default function useInfiniteScroll(init, callback, ref) {
         async function fetchData() {
             await callback();
         }
-        fetchData(); 
+        if (!init.scrollEnd) fetchData(); 
     }, [scrollEnd]);
 }

@@ -1,0 +1,21 @@
+
+.fetch-btn {
+    padding: .4rem;
+    margin-bottom: .7rem;
+    border: solid .1rem rgba(134, 10, 87, 0.1);
+    background-color: rgb(235, 89, 145);
+    font-weight: bold;
+    color: white;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: all ease .1s;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+    margin: 2rem auto;
+    padding: 1rem;
+}

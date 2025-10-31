@@ -1,0 +1,1 @@
+-agregar un boton para volver a hacer fetch si da error

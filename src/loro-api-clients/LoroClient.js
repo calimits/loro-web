@@ -168,6 +168,16 @@ class LoroClient {
     }
 
     //CHAT ENDPOINTS FUNCTIONS
+    async getChats41User(start = 0, limit = 50) {
+        const res = await this.#httpHelper.get(`${this.#baseURL}/chats/${this.#userID}?start=${start}&limit=${limit}`, {
+            headers: {
+                'Authorization': `Bearer ${this.#accessToken}`
+            }
+        })
+
+        return res;
+    }
+
     async postChat(chat) {
         const body = {
             userID: this.#userID,

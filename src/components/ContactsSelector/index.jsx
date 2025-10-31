@@ -5,6 +5,7 @@ import useContacts from "../ContactsPanel/hooks/useContacts";
 import Contact from "../Contact";
 import cache from "../../utils/chache-ram";
 import { loroClient } from "../../loro-api-clients/loroClientInstance";
+import FetchBtn from "../FetchBtn";
 
 export default function ContactsSelector() {
     const { setCurrentView } = useCurrentView();
@@ -12,9 +13,11 @@ export default function ContactsSelector() {
         loading,
         contactsRef,
         edit,
+        error,
         setEdit,
         selected,
-        setSelected } = useContacts();
+        setSelected,  
+        fetchData} = useContacts();
 
     const handleNextClick = (e) => {
         cache.set("chat-members", [...selected, loroClient.getUserID()]);
@@ -31,12 +34,12 @@ export default function ContactsSelector() {
                     <h2 className="app-title">Select contacts</h2>
                 </div>
             </header>
-                <div ref={contactsRef} className="contacts">
+                {!error ? (<div ref={contactsRef} className="contacts">
                     {contacts.map((contact, index) => (<Contact key={index} setEdit={setEdit} setSelected={setSelected}
                         edit={edit} username={contact.username} id={contact.id} />))}
                     {loading ? <p className="small-info-text">Loading</p> : null}
                     {loading ? <p className="small-info-text">An error ocurred. We couldn't delete ypu contacts. Please try agaian.</p> : null}
-                </div>
+                </div>) : <FetchBtn onClick={fetchData}/>}
                 <button onClick={handleNextClick} className="contacts-btn">➜</button>
         </div>
     )

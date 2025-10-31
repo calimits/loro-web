@@ -27,8 +27,22 @@ export default function useContacts() {
             await loroClient.deleteContacts(selected);
             const remainContacts = contacts.filter((contact => !selected.includes(contact.id)));
             setContacts(remainContacts);
-            cache.set("contacts", {...cache.get('contacts'), contacts: [...remainContacts]});
+            cache.set("contacts", { ...cache.get('contacts'), contacts: [...remainContacts] });
             setEdit(false);
+        } catch (error) {
+            setError(true);
+        }
+    }
+
+    const fetchData = async (e) => {
+        try {
+            setLoading(true);
+            const res = await loroClient.getUserContacts(start, limit);
+            cache.set("contacts", { start: start + res.length, limit: limit, contacts: [...res] });
+            setStart(start + res.length);
+            setContacts([...contacts, ...res]);
+            setLoading(false);
+            setError(false);
         } catch (error) {
             setError(true);
         }
@@ -36,12 +50,7 @@ export default function useContacts() {
 
     useEffect(() => {
         async function getContacts() {
-            setLoading(true);
-            const res = await loroClient.getUserContacts(start, limit);
-            cache.set("contacts", { start: start + res.length, limit: limit, contacts: [...res] });
-            setStart(start + res.length);
-            setContacts([...contacts, ...res]);
-            setLoading(false);
+            await fetchData();
         }
         if (!isCached) getContacts();
         if (isCached) setContacts([...contacts, ...cache.get("contacts").contacts]);
@@ -50,13 +59,14 @@ export default function useContacts() {
 
     return {
         contacts,
-        loading, 
-        edit, 
-        setEdit, 
+        loading,
+        edit,
+        setEdit,
         error,
         selected,
         setSelected,
         handleCancelClick,
-        handleDeleteClick
+        handleDeleteClick,
+        fetchData
     }
 }
