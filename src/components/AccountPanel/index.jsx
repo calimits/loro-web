@@ -2,7 +2,7 @@ import { useCurrentView } from "../ViewManager/context/currentViewContext"
 import "./AccountPanel.css"
 import useAccount from "./hooks/useAccount";
 
-export default function AccountPanel() {
+export default function AccountPanel({classNames=""}) {
     const { setCurrentView } = useCurrentView();
 
     const {
@@ -11,7 +11,7 @@ export default function AccountPanel() {
     } = useAccount();
 
     return (
-        <div className="account-panel-container">
+        <div className={`account-panel-container ${classNames}`}>
             <header className="header-bar cool-bar">
                 <div className="to-left">
                     <p className="back-btn" onClick={(e) => setCurrentView("home")}>←</p>

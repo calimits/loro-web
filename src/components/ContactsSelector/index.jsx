@@ -7,7 +7,7 @@ import cache from "../../utils/chache-ram";
 import { loroClient } from "../../loro-api-clients/loroClientInstance";
 import FetchBtn from "../FetchBtn";
 
-export default function ContactsSelector() {
+export default function ContactsSelector({classNames=""}) {
     const { setCurrentView } = useCurrentView();
     const { contacts,
         loading,
@@ -27,7 +27,7 @@ export default function ContactsSelector() {
     useEffect(() => setEdit(true), []);
 
     return (
-        <div className="chat-form-container">
+        <div className={`chat-form-container ${classNames}`}>
             <header className="header-bar cool-bar">
                 <div className="to-left">
                     <p className="back-btn" onClick={(e) => setCurrentView("contacts")}>←</p>

@@ -6,15 +6,18 @@ const ConversationContext = createContext();
 const ConversationProvider = ({children}) => {
     const [chats, setChats] = useState([]);
     const [messages, setMessages] = useState([]);
+    const [chatOpen, setChatOpen] = useState(false);
 
     const setters = useMemo(()=>({
         setChats,
-        setMessages
+        setMessages,
+        setChatOpen
     }), []);
 
     const values = useMemo(()=>({
         chats,
-        messages
+        messages,
+        chatOpen
     }), [chats, messages]);
 
     const contextValues = useMemo(()=>({

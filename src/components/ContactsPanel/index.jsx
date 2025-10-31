@@ -4,7 +4,7 @@ import Contact from "../Contact";
 import useContacts from "./hooks/useContacts";
 import FetchBtn from "../FetchBtn";
 
-export default function ContactsPanel() {
+export default function ContactsPanel({classNames=""}) {
     const { setCurrentView } = useCurrentView();
     const { contacts, 
         loading, 
@@ -18,7 +18,7 @@ export default function ContactsPanel() {
         fetchData } = useContacts();
     
     return (
-        <div className="contacts-panel">
+        <div className={`contacts-panel ${classNames}`}>
             <header className="header-bar cool-bar">
                 <div className="to-left">
                     <p className="back-btn" onClick={(e) => setCurrentView("home")}>←</p>

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { loroClient } from "../../loro-api-clients/loroClientInstance"
 import cache from "../../utils/chache-ram";
 
-export default function ContactInfo() {
+export default function ContactInfo({classNames=""}) {
     const { setCurrentView } = useCurrentView();
 
     const [contact, setContact] = useState({
@@ -25,7 +25,7 @@ export default function ContactInfo() {
     }, [])
 
     return (
-        <div className="contact-info-container">
+        <div className={`contact-info-container ${classNames}`}>
             <header className="header-bar cool-bar">
                 <div className="to-left">
                     <p className="back-btn" onClick={(e) => setCurrentView("contacts")}>←</p>

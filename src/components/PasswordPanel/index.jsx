@@ -2,7 +2,7 @@ import "./PasswordPanel.css";
 import { useCurrentView } from "../ViewManager/context/currentViewContext";
 import usePasswordForm from "./hooks/usePasswordForm";
 
-export default function PasswordPanel() {
+export default function PasswordPanel({classNames=""}) {
     const {setCurrentView} = useCurrentView();
 
     const {
@@ -14,7 +14,7 @@ export default function PasswordPanel() {
     } = usePasswordForm();
     
     return (
-        <div className="password-panel">
+        <div className={`password-panel ${classNames}`}>
             <header className="header-bar cool-bar">
                 <div className="to-left">
                     <p className="back-btn" onClick={(e) => setCurrentView("profile")}>←</p>

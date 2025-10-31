@@ -2,7 +2,7 @@ import "./ContactForm.css"
 import { useCurrentView } from "../ViewManager/context/currentViewContext"
 import useContactForm from "./hooks/useContactForm";
 
-export default function ContactForm() {
+export default function ContactForm({classNames=""}) {
     const {setCurrentView} = useCurrentView();
 
     const {
@@ -14,7 +14,7 @@ export default function ContactForm() {
     } = useContactForm();
 
     return (
-        <div className="contact-form-container">
+        <div className={`contact-form-container ${classNames}`}>
             <header className="header-bar cool-bar">
                 <div className="to-left">
                     <p className="back-btn" onClick={(e) => setCurrentView("contacts")}>←</p>

@@ -5,7 +5,7 @@ import useProfile from "./hooks/useProfile";
 import { useCurrentView } from "../ViewManager/context/currentViewContext";
 import FetchBtn from "../FetchBtn";
 
-export default function () {
+export default function ({classNames=""}) {
     const {
         userInfo,
         loading,
@@ -23,7 +23,7 @@ export default function () {
     if (loading) return <h3 className="account-panel">Loading ...</h3>
 
     return (
-        <div className="account-panel ">
+        <div className={`account-panel ${classNames}`}>
             <AccountHeaderPanel />
             <div className="profile-info-container">
                 <img src={profilePic} alt="Profile Photo" className="profile-photo" />

@@ -4,11 +4,11 @@ import { useCurrentView } from "../ViewManager/context/currentViewContext"
 import "./Home.css"
 
 
-export default function Home() {
+export default function Home({classNames=""}) {
     const {setCurrentView} = useCurrentView();
 
     return (
-        <div className="home">
+        <div className={`home ${classNames}`}>
             <HeaderBar/>
             <ChatList/>
             <button onClick={(e)=>setCurrentView("contacts")} className="contacts-btn">💬</button>
