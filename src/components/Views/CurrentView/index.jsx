@@ -13,31 +13,43 @@ import ContactInfo from "../../ContactInfo"
 import ContactsSelector from "../../ContactsSelector"
 import ChatForm from "../../ChatForm"
 import { useConversation } from "../../ConversationContext"
+import { useEffect, useState } from "react"
 
 
 
 export default function CurrentView() {
     const {chatOpen} = useConversation();
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 560);
+
+    useEffect(()=>{
+        const checkScreenSize = (e) => {
+            setIsMobile(window.innerWidth < 560)
+        }
+
+        window.addEventListener("resize", checkScreenSize);
+
+        return () => window.removeEventListener("resize", checkScreenSize);
+    }, [])
 
     return (
-        <div className="current-view">
+        <div className={isMobile && chatOpen ? "display-block" : "current-view"}>
             <CurrentViewProvider>
                 <ViewManeger>
-                    <View view="home" element={<Home classNames="hide"/>}/>
-                    <View view="profile" element={<ProfilePanel/>}/>
-                    <View view="password-panel" element={<PasswordPanel/>}/>
-                    <View view="account" element={<AccountPanel/>}/>
-                    <View view="contacts" element={<ContactsPanel/>}/>
-                    <View view="add-contact" element={<ContactForm/>}/>
-                    <View view="contact-info" element={<ContactInfo/>}/>
-                    <View view="select-contacts" element={<ContactsSelector/>}/>
+                    <View view="home" element={<Home classNames={isMobile && chatOpen ? "hide" : "view"}/>}/>
+                    <View view="profile" element={<ProfilePanel classNames={isMobile && chatOpen ? "hide" : "view"}/>}/>
+                    <View view="password-panel" element={<PasswordPanel classNames={isMobile && chatOpen ? "hide" : "view"}/>}/>
+                    <View view="account" element={<AccountPanel classNames={isMobile && chatOpen ? "hide" : "view"}/>}/>
+                    <View view="contacts" element={<ContactsPanel classNames={isMobile && chatOpen ? "hide" : "view"}/>}/>
+                    <View view="add-contact" element={<ContactForm classNames={isMobile && chatOpen ? "hide" : "view"}/>}/>
+                    <View view="contact-info" element={<ContactInfo classNames={isMobile && chatOpen ? "hide" : "view"}/>}/>
+                    <View view="select-contacts" element={<ContactsSelector classNames={isMobile && chatOpen ? "hide" : "view"}/>}/>
                     <View view="new-chat" element={<ChatForm/>}/>
                 </ViewManeger>
             </CurrentViewProvider>
-            {!chatOpen ? 
+            {chatOpen ? 
             <CurrentViewProvider>
                 <ViewManeger>
-                    <View view="home" element={<Chat/>}></View>
+                    <View view="home" element={<Chat classNames={isMobile && chatOpen ? "full-screen" : ""}/>}/>
                 </ViewManeger>
             </CurrentViewProvider> :
             <div className="space-background"></div>}

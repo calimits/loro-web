@@ -11,7 +11,7 @@ export default function AccountPanel({classNames=""}) {
     } = useAccount();
 
     return (
-        <div className={`account-panel-container ${classNames}`}>
+        <div className={`${classNames}`}>
             <header className="header-bar cool-bar">
                 <div className="to-left">
                     <p className="back-btn" onClick={(e) => setCurrentView("home")}>←</p>

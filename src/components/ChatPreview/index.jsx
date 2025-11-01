@@ -1,10 +1,18 @@
 import profilePpic from "../../assets/chat-pic.png";
+import { useConversation } from "../ConversationContext";
 import "./Chat.css"
 
 export default function ChatPreview({name, checks, lastMessage, time, messages}) {
+    const {setChatOpen} = useConversation();
+
+    const handleClick = (e) => {
+        console.log('click')
+        setChatOpen(true);
+    }
+
     return (
         <>
-            <section className="chat-container">
+            <section onClick={handleClick} className="chat-container">
                 <div className="chat-info">
                     <img className="profile-pic" src={profilePpic}></img>
                     <div className="chat-text-info">

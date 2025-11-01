@@ -7,7 +7,7 @@ const ConversationProvider = ({children}) => {
     const [chats, setChats] = useState([]);
     const [messages, setMessages] = useState([]);
     const [chatOpen, setChatOpen] = useState(false);
-
+    
     const setters = useMemo(()=>({
         setChats,
         setMessages,
@@ -18,12 +18,13 @@ const ConversationProvider = ({children}) => {
         chats,
         messages,
         chatOpen
-    }), [chats, messages]);
+    }), [chats, messages, chatOpen]);
 
     const contextValues = useMemo(()=>({
         ...values,
         ...setters
     }), [values, setters]);
+    
 
     return (
         <ConversationContext.Provider value={contextValues}>

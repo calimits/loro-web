@@ -8,7 +8,7 @@ export default function Home({classNames=""}) {
     const {setCurrentView} = useCurrentView();
 
     return (
-        <div className={`home ${classNames}`}>
+        <div className={`${classNames}`}>
             <HeaderBar/>
             <ChatList/>
             <button onClick={(e)=>setCurrentView("contacts")} className="contacts-btn">💬</button>

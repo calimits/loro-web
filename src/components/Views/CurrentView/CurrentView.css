@@ -1,31 +1,46 @@
+.display-block {
+  display: block;
+}
+
+.view {
+    position: relative;
+    display: flex;
+    flex-basis: 37%;
+    flex-flow: column;
+    height: 100vh;
+}
 
 .hide {
+  flex-basis: 0%;
+  display: none;
+  background-color: red;
 }
 
 .current-view {
-    display: flex;
+  display: flex;
 }
 
 .chat-back {
-    margin: 0;
-    height: 100%;
+  margin: 0;
+  height: 100%;
 }
 
 .space-background {
-    flex: 1;
-    background-image: url("../../../assets//chat-back.png");
+  flex: 1;
+  background-image: url("../../../assets//chat-back.png");
 }
 
 @media (max-width: 560px) {
-    .space-background {
-        display: none;
-    }
-    
-    .current-view {
-        display: block;
-    }
-    .chat-back {
-        margin: 0;
-        display: none;
-    }
+  .space-background {
+    display: none;
+  }
+
+  .current-view {
+    display: block;
+  }
+  .chat-back {
+    margin: 0;
+    display: none;
+  }
+
 }

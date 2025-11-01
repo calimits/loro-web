@@ -1,9 +1,15 @@
+import { useConversation } from "../ConversationContext"
 import "./ChatHeader.css"
 
 export default function ChatHeader() {
+    const {chatOpen, setChatOpen} = useConversation();
+
     return (
         <header className="chat-header">
-            <h3 className="chat-name">Chat name</h3>
+            <div className="display-flex"> 
+                {chatOpen && window.innerWidth < 560 ? <p className="back-btn" onClick={e=>setChatOpen(false)}>←</p> : null}
+                <h3 className="chat-name">Chat name</h3>
+            </div>
             <div className="dropDown-menu-chat">
                 <p className="chat-options dropDown-btn">...</p>
                 <div className="dropDown-chat-content">

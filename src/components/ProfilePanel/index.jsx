@@ -23,7 +23,7 @@ export default function ({classNames=""}) {
     if (loading) return <h3 className="account-panel">Loading ...</h3>
 
     return (
-        <div className={`account-panel ${classNames}`}>
+        <div className={`${classNames}`}>
             <AccountHeaderPanel />
             <div className="profile-info-container">
                 <img src={profilePic} alt="Profile Photo" className="profile-photo" />

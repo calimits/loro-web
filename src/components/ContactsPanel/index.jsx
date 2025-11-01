@@ -18,7 +18,7 @@ export default function ContactsPanel({classNames=""}) {
         fetchData } = useContacts();
     
     return (
-        <div className={`contacts-panel ${classNames}`}>
+        <div className={`${classNames}`}>
             <header className="header-bar cool-bar">
                 <div className="to-left">
                     <p className="back-btn" onClick={(e) => setCurrentView("home")}>←</p>

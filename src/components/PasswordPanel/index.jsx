@@ -14,7 +14,7 @@ export default function PasswordPanel({classNames=""}) {
     } = usePasswordForm();
     
     return (
-        <div className={`password-panel ${classNames}`}>
+        <div className={`${classNames}`}>
             <header className="header-bar cool-bar">
                 <div className="to-left">
                     <p className="back-btn" onClick={(e) => setCurrentView("profile")}>←</p>
