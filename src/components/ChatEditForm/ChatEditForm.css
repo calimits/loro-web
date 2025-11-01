@@ -1,0 +1,13 @@
+
+.overflow-auto {
+    overflow-y: auto;
+}
+
+.contacts-box {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    margin: 1 auto;
+}

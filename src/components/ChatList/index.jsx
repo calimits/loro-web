@@ -57,14 +57,15 @@ export default function ChatList() {
 
     return (
         <div ref={listRef} className="chat-list">
-            {!error ? (chats.map((chat) => (
+            {!error ? (chats.map((chat, i) => (
                 <ChatPreview
-                    key={chat._id}
+                    key={i}
                     name={chat.name}
                     time={""}
                     checks={""}
                     lastMessage={""}
                     messages={""}
+                    id={chat._id}
                 />
             ))) : <FetchBtn onClick={fetchChats} />}
         </div>

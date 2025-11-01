@@ -14,6 +14,7 @@ import ContactsSelector from "../../ContactsSelector"
 import ChatForm from "../../ChatForm"
 import { useConversation } from "../../ConversationContext"
 import { useEffect, useState } from "react"
+import ChatEditForm from "../../ChatEditForm"
 
 
 
@@ -50,6 +51,7 @@ export default function CurrentView() {
             <CurrentViewProvider>
                 <ViewManeger>
                     <View view="home" element={<Chat classNames={isMobile && chatOpen ? "full-screen" : ""}/>}/>
+                    <View view="chat-info" element={<ChatEditForm/>}/>
                 </ViewManeger>
             </CurrentViewProvider> :
             <div className="space-background"></div>}

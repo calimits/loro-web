@@ -12,5 +12,5 @@
 
 .cool-bar {
     border-bottom: solid .1rem rgb(241, 241, 241);
-    box-shadow: 0rem .3rem 1rem rgba(0, 0, 0, .1);
+    box-shadow: .5rem .3rem 1rem rgba(0, 0, 0, .1);
 }

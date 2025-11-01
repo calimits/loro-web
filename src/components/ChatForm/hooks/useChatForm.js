@@ -1,10 +1,8 @@
 import { useState } from "react";
 import cache from "../../../utils/chache-ram";
 import { loroClient } from "../../../loro-api-clients/loroClientInstance";
-import { useCurrentView } from "../../ViewManager/context/currentViewContext";
 
 export default function useChatForm() {
-    const { setCurrentView } = useCurrentView();
     const [members] = useState(cache.get("chat-members"));
     const [formData, setFormData] = useState({
         chatName: "",
@@ -37,9 +35,10 @@ export default function useChatForm() {
 
         try {
             const {_id} = await loroClient.postChat(chat);
-            cache.set("chats", [...cache.get("chats"), {...chat, _id}]);
-            setCurrentView("home");
+            const chats = cache.get("chats").chats;
+            cache.set("chats", {...cache.get("chats"), chats: [{...chat, _id}, ...chats]});
         } catch (error) {
+            console.log(error);
             setError(true);
             console.log(error.errType, error.errMessage);
         }

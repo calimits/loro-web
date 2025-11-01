@@ -37,6 +37,12 @@ class LoroClient {
         }
     }
 
+    async getManyUsersByID(IDs) {
+        const body = { userIDs: IDs };
+        const users = await this.#httpHelper.post(`${this.#baseURL}/users/ids`, { body });
+        return users;
+    }
+
     async signUp(username, email, password) {
         const body = { username, email, password };
         const res = await this.#httpHelper.post(`${this.#baseURL}/users/sign-up`, { body });

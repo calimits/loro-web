@@ -1,12 +1,13 @@
 import profilePpic from "../../assets/chat-pic.png";
+import cache from "../../utils/chache-ram";
 import { useConversation } from "../ConversationContext";
 import "./Chat.css"
 
-export default function ChatPreview({name, checks, lastMessage, time, messages}) {
+export default function ChatPreview({name, checks, lastMessage, time, messages, id}) {
     const {setChatOpen} = useConversation();
 
     const handleClick = (e) => {
-        console.log('click')
+        cache.set("chat-open", id);
         setChatOpen(true);
     }
 

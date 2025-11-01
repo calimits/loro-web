@@ -12,6 +12,13 @@ export default function ChatForm({classNames}) {
         handleChange,
         handleSubmit
     } = useChatForm();
+    
+    const onsubmit = async (e) => {
+        await handleSubmit(e); 
+        setTimeout(() => {
+            setCurrentView("home");
+        }, 500);
+    }
 
     return(
         <div className={`${classNames}`}>
@@ -21,7 +28,7 @@ export default function ChatForm({classNames}) {
                     <h2 className="app-title">New Chat</h2>
                 </div>
             </header>
-            <form className="profile-info-container" onSubmit={handleSubmit}>
+            <form className="profile-info-container" onSubmit={onsubmit}>
                 <img src={chatPic} alt="Profile Photo" className="profile-photo" />
                 <div className="profile-info-box">
                     <label className="info-label" htmlFor="chatName">@</label>
