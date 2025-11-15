@@ -199,6 +199,26 @@ class LoroClient {
 
         return res;
     }
+
+    async putChatName(name, chatID) {
+        const body = { name };
+        this.#httpHelper.put(`${this.#baseURL}/chats/update/name/${chatID}/${this.#userID}`, {
+            headers: {
+                'Authorization': `Bearer ${this.#accessToken}`
+            },
+            body
+        });
+    }
+
+    async putChatDescription(description, chatID) {
+        const body = { description };
+        this.#httpHelper.put(`${this.#baseURL}/chats/update/description/${chatID}/${this.#userID}`, {
+            headers: {
+                'Authorization': `Bearer ${this.#accessToken}`
+            },
+            body
+        });
+    }
 }
 
 export { LoroClient };

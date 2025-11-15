@@ -1,1 +1,1 @@
--agregar un boton para volver a hacer fetch si da error
+-arreglar cliuckeado de chats para q renderice nuevo chat
