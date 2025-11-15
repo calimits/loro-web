@@ -4,11 +4,12 @@ import { useConversation } from "../ConversationContext";
 import "./Chat.css"
 
 export default function ChatPreview({name, checks, lastMessage, time, messages, id}) {
-    const {setChatOpen} = useConversation();
+    const {setChatOpen, setChatOpenID, chatOpenID} = useConversation();
 
     const handleClick = (e) => {
         cache.set("chat-open", id);
         setChatOpen(true);
+        setChatOpenID(id);
     }
 
     return (
