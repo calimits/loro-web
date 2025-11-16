@@ -1,9 +1,9 @@
 import profilePpic from "../../assets/contact-pic.png"
 
-export default function ChatMember({username, id}) {
+export default function ChatMember({member}) {
     const handleClick = (e) => {
         e.preventDefault();
-        console.log(username, id);
+        console.log(member);
     }
 
     return (
@@ -11,8 +11,9 @@ export default function ChatMember({username, id}) {
           <div className="chat-info">
             <img className="profile-pic" src={profilePpic}></img>
             <div className="chat-text-info">
-              <h4 className="chat-title text">{username}</h4>
+              <h4 className="chat-title text">{member.username}</h4>
             </div>
+            {member.isAdmin ? <p className="small-info-text">Admin</p> : null}
           </div>
         </section>
       );

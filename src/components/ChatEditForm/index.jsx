@@ -1,6 +1,7 @@
 import { useCurrentView } from "../ViewManager/context/currentViewContext";
 import "./ChatEditForm.css";
 import chatPic from "../../assets/chat-pic.png"
+import profilePic from '../../assets/contact-pic.png'
 import cache from "../../utils/chache-ram";
 import { useEffect, useState } from "react";
 import { useConversation } from "../ConversationContext";
@@ -34,7 +35,6 @@ export default function ChatEditForm() {
         leaveChatModal: false,
         memberInfoModal: false
     })
-    const [successLeave, setSuccessLeave] = useState(false);
 
     const handleChange = (e) => {
         setFormData({
@@ -49,6 +49,12 @@ export default function ChatEditForm() {
             let userIDs = [];
             chatUsers.forEach((user => userIDs.push(user.userID)));
             const users = await loroClient.getManyUsersByID(userIDs);
+            
+            users.forEach(user => {
+                const isAdmin = chatUsers.find(chatUser => chatUser.userID === user._id).isAdmin;
+                user.isAdmin = isAdmin;
+            });
+
             cache.set(`members-${cache.get("chat-open")}`, users);
             setMembers(users);
         } catch (error) {
@@ -155,16 +161,20 @@ export default function ChatEditForm() {
                             <button className="form-btn" >No</button>
                             <button className="form-btn" onClick={handleLeaveChatClick}>Yes</button>
                         </div>
-                        {successLeave ? <p className="small-info-text">You are no longer part of this chat.</p> : null}
                         {errors.leaveChat ? <p className="small-info-text">An error ocurred please try again</p> : null}
                     </div>
                 </div> : null}
                 <p className="small-info-text">Members</p>
                 <div className="contacts-box">
                     {members.map(((member, i) => (
-                        <ChatMember key={i} username={member.username} id={member._id} />
+                        <ChatMember key={i} member={member} />
                     )))}
                 </div>
+            </div>
+            <div className="member-info-modal">
+                <img src={profilePic} alt="Profile Photo" className="member-photo"/>
+                <h3 className="member-name ">username</h3>
+                <p className="chat-title text link">testing@gmail.com</p>
             </div>
         </div>
     )
