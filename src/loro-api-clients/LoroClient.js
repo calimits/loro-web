@@ -210,6 +210,16 @@ class LoroClient {
         });
     }
 
+    async putChatAdminStatus41User(isAdmin, chatID, memberID) {
+        const body = { isAdmin };
+        await this.#httpHelper.put(`${this.#baseURL}/chats/update/members/is-admin/${chatID}/${this.#userID}/${memberID}`, {
+            headers: {
+                'Authorization': `Bearer ${this.#accessToken}`
+            },
+            body
+        });
+    }
+
     async putChatDescription(description, chatID) {
         const body = { description };
         this.#httpHelper.put(`${this.#baseURL}/chats/update/description/${chatID}/${this.#userID}`, {
@@ -225,8 +235,10 @@ class LoroClient {
             headers: {
                 'Authorization': `Bearer ${this.#accessToken}`
             }
-        })
+        });
     }
+
 }
+
 
 export { LoroClient };

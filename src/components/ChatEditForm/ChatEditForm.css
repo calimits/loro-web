@@ -87,3 +87,19 @@
 .member-name {
     margin: 0;
 }
+
+.modal-btn{
+    background-color: white;
+    border: solid .1rem rgba(0,0,0,.2);
+    padding: .9rem;
+    border-radius: .5rem;
+    cursor: pointer;
+}
+
+.color-green {
+    color:rgb(31, 122, 31);
+}
+
+.color-red {
+    color: brown;
+}

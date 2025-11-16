@@ -1,9 +1,13 @@
 import profilePpic from "../../assets/contact-pic.png"
 
-export default function ChatMember({member}) {
+export default function ChatMember({member, setMemberSelected, setShowModals}) {
     const handleClick = (e) => {
         e.preventDefault();
-        console.log(member);
+        e.stopPropagation();
+        setMemberSelected(member);
+        setShowModals(showModals => {
+          return {...showModals,  memberInfoModal: true}
+        })
     }
 
     return (
