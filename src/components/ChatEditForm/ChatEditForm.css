@@ -1,3 +1,6 @@
+.pos-relative {
+    position: relative;
+}
 
 .overflow-auto {
     overflow-y: auto;
@@ -10,4 +13,49 @@
     align-items: center;
     width: 60%;
     margin: 1 auto;
+}
+
+.link-btn {
+    color: rgb(235, 89, 145);
+    text-decoration: none;
+    margin: 0;
+    margin-bottom: .4rem;
+    padding-left: 0.4rem;
+    cursor: pointer;
+}
+
+.btn-modal-container {
+    width: 70%;
+    margin: .3rem auto;
+    display: flex;
+    flex-flow: row;
+    justify-content:space-between;
+    align-items: center;
+}
+
+.modal-window {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    align-items: start;
+    padding: .5rem;
+    border: solid .1rem rgba(0,0,0,.07);
+    border-radius: 1rem;
+    box-shadow: .2rem .4rem .4rem .2rem rgba(133, 12, 86, 0.5);
+    min-width: 10rem;
+    background-color: rgba(255, 255, 255, .9);
+    width: 20%;
+}
+
+.modal-container {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-grow: 0;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    bottom: 0;
+    
 }

@@ -219,6 +219,14 @@ class LoroClient {
             body
         });
     }
+
+    async deleteOneChatMember(chatID, memberID) {
+        this.#httpHelper.delete(`${this.#baseURL}/chats/members/${chatID}/${this.#userID}/${memberID}`, {
+            headers: {
+                'Authorization': `Bearer ${this.#accessToken}`
+            }
+        })
+    }
 }
 
 export { LoroClient };

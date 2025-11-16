@@ -13,14 +13,14 @@ const ConversationProvider = ({children}) => {
         setChats,
         setMessages,
         setChatOpen,
-        setChatOpenID
+        setChatOpenID, 
     }), []);
 
     const values = useMemo(()=>({
         chats,
         messages,
         chatOpen,
-        chatOpenID
+        chatOpenID,
     }), [chats, messages, chatOpen, chatOpenID]);
 
     const contextValues = useMemo(()=>({
