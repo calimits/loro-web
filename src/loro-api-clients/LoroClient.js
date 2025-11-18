@@ -238,6 +238,24 @@ class LoroClient {
         });
     }
 
+    //MESSAGE ENDPOINTS
+    async sendTextMessage(message) {
+        const formData = new FormData();
+        formData.append("dateTime", message.dateTime);
+        formData.append("type", "text");
+        formData.append("chatID", message.chatID);
+        formData.append("emisorUserID", this.#userID);
+        formData.append("content", message.content);
+
+        await fetch(`${this.#baseURL}/messages/send-one`, {
+            method: "POST",
+            headers: {
+                'Authorization': `Bearer ${this.#accessToken}`
+            },
+            body: formData
+        });
+    }
+
 }
 
 

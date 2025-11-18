@@ -1,33 +1,37 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 
 const ConversationContext = createContext();
 
 const ConversationProvider = ({children}) => {
     const [chats, setChats] = useState([]);
-    const [messages, setMessages] = useState([]);
+    const [unReadMessages, setUnReadMessages] = useState([]);
+    const [unSentMessages, setUnsentMessages] = useState([]);
     const [chatOpen, setChatOpen] = useState(false);
     const [chatOpenID, setChatOpenID] = useState("");
     
     const setters = useMemo(()=>({
         setChats,
-        setMessages,
+        setUnReadMessages,
         setChatOpen,
         setChatOpenID, 
+        setUnsentMessages
     }), []);
 
     const values = useMemo(()=>({
         chats,
-        messages,
+        unReadMessages,
         chatOpen,
         chatOpenID,
-    }), [chats, messages, chatOpen, chatOpenID]);
+        unSentMessages
+    }), [chats, unReadMessages, chatOpen, chatOpenID, unSentMessages]);
 
     const contextValues = useMemo(()=>({
         ...values,
         ...setters
     }), [values, setters]);
     
+    useEffect(()=>console.log(unReadMessages), [unReadMessages]);
 
     return (
         <ConversationContext.Provider value={contextValues}>

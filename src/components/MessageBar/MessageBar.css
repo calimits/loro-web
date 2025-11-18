@@ -3,7 +3,7 @@
 .message-bar {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     padding: .3rem;
     position: sticky;
     background-color: rgba(255,255,255, .9);
@@ -16,25 +16,24 @@
 }
 
 .send-button {
-    width: 6%;
+    width: 2.5rem;
     background-color: rgb(241, 75, 186);
     border: none;
     border-radius: 50%;
     cursor: pointer;
     transition: all ease .1s;
+    margin-right: 1rem;
 }
 
 .send-button:hover {
     background-color: rgb(187, 26, 133);
 }
 
-.send-button:active {
-    background-color: rgb(26, 187, 80);
-}
 
 .input-message {
     width: 80%;
     padding: .5rem;
+    margin-left: 1rem;
     border: none;
     border-radius: 1rem;
 }
@@ -45,4 +44,8 @@
     padding: .5rem;
     border: none;
     border-radius: 1rem;
+}
+
+textarea {
+    resize: none;
 }
