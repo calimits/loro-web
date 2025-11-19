@@ -6,11 +6,11 @@ import { useEffect, useState } from "react"
 
 export default function Chat({classNames=""}) {
     const [messages, setMessages] = useState([]);
-    useEffect(()=>console.log(messages), [messages]);
+
     return (
         <div className={`chat ${classNames}`}>
             <ChatHeader/>
-            <MessageBox/>
+            <MessageBox messages={messages} setMessages={setMessages}/>
             <MessageBar setMessages={setMessages}/>
         </div>
     )

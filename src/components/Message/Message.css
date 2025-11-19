@@ -4,17 +4,31 @@
     display: flex;
     flex-flow: column;
     border: solid rgb(224, 224, 224) .1rem;
-    width: 70%;
+    width: 55%;
     border-radius: 1rem;
-    background-color: rgba(255,255,255,.7);
 }
 
 .text-message {
     margin: 0.1rem;
-    margin-left: .4rem;
+    margin-left: .7rem;
     margin-right: .4rem;
+    padding: .1rem;
 }
 
 .to-the-right{
     align-self: self-end;
+}
+
+.sent-message {
+    background-color: rgba(255,255,255,.7);
+    justify-self: right;
+}
+
+.recieved-message {
+    background-color: rgba(238, 76, 157, 0.5);
+    justify-self: left;
+}
+
+.flex-container {
+    display: flex;
 }
