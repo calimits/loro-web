@@ -239,6 +239,15 @@ class LoroClient {
     }
 
     //MESSAGE ENDPOINTS
+    async getMessages41Chat(chatID, start=0, limit=100) {
+        const messages = await this.#httpHelper(`${this.#baseURL}/messages/${chatID}/${this.#userID}?start=${start}&limit=${limit}`, {
+            headers: {
+                'Authorization': `Bearer ${this.#accessToken}`
+            }
+        });
+        return messages;
+    }
+
     async sendTextMessage(message) {
         const formData = new FormData();
         formData.append("dateTime", message.dateTime);
@@ -255,6 +264,7 @@ class LoroClient {
             body: formData
         });
     }
+
 
 }
 
