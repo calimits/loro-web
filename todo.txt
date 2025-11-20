@@ -1,1 +1,10 @@
 -anadir refetch a los chats para obtener los mensajes
+-anadir a envio de mensaje, identificacion de error red o servidor
+y guardarlos con una etiqueta distinta para cada tipo de error, 
+en el contexto crear un useEffect para los unSentMessages que revise
+el ult push y si es error de server, reenviar con backoff exponencial, si 
+tras intentar sin resultados 5 veces, notificar con una modal global diciendo
+el chat y mensaje q no se envio y pidiendo que reenvie manualmente y luego
+borrarlo de los unsent messages
+-al entrar a un chat, automaticamente reenviar todos los mensajes no enviados
+independientemente de su etiqueta
