@@ -19,6 +19,9 @@
 .chat-name {
     margin: 0;
     padding: .3rem;
+    padding-right: .9rem;
+    padding-top: .9rem;
+    padding-bottom: .9rem;
     padding-right: 2rem;
     cursor: pointer;
     transition: all ease .1s;

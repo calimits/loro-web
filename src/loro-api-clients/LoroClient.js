@@ -265,6 +265,16 @@ class LoroClient {
         });
     }
 
+    async deleteManyMessages(chatID, msgIDs) {
+        const body = { msgIDs };
+        this.#httpHelper.delete(`${this.#baseURL}/messages/delete-many/${chatID}/${this.#userID}`, {
+            headers: {
+                'Authorization': `Bearer ${this.#accessToken}`
+            },
+            body
+        })
+    }
+
 
 }
 

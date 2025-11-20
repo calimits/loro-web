@@ -11,6 +11,7 @@ export default function Chat({ classNames = "" }) {
     const { chatOpenID } = useConversation();
 
     const [messages, setMessages] = useState([]);
+    const [deleteMsg, setDeleteMsg] = useState(true);
 
     useEffect(() => {
         async function fetchData() {
@@ -27,8 +28,8 @@ export default function Chat({ classNames = "" }) {
 
     return (
         <div className={`chat ${classNames}`}>
-            <ChatHeader />
-            <MessageBox messages={messages} setMessages={setMessages} />
+            <ChatHeader deleteMsg={deleteMsg}/>
+            <MessageBox messages={messages} setMessages={setMessages} deleteMsg={deleteMsg} setDeleteMsg={setDeleteMsg}/>
             <MessageBar setMessages={setMessages} />
         </div>
     )

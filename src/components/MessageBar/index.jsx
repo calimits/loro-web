@@ -8,7 +8,7 @@ import { useConversation } from "../ConversationContext";
 
 export default function MessageBar({ setMessages }) {
     const [message, setMessage] = useState("");
-    const { setUnReadMessages } = useConversation();
+    const { setUnsentMessages } = useConversation();
 
     const handleChange = (e) => {
         setMessage(e.target.value);
@@ -32,17 +32,32 @@ export default function MessageBar({ setMessages }) {
             })
         });
 
+        const tempMessage = {
+            ...messageBody,
+            emisorUserID,
+            type: "text",
+            messageVerificationStatus: messageStatusVerification,
+            unSent: true
+        };
+
+        setMessages(messages => [...messages, tempMessage]);
+        setMessage("");
+
         try {
             await loroClient.sendTextMessage(messageBody);
-            setMessages(messages => [...messages, { ...messageBody, emisorUserID: cache.get("user-ID"), type: "text", messageVerificationStatus: messageStatusVerification }]);
             const cachedMessages = cache.get(`chat-${cache.get("chat-open")}`).messages;
             cache.set(`chat-${cache.get("chat-open")}`, {
                 ...cache.get(`chat-${cache.get("chat-open")}`),
-                messages: [...cachedMessages, { ...messageBody, emisorUserID: cache.get("user-ID"), type: "text", messageVerificationStatus: messageStatusVerification }]
+                messages: [...cachedMessages, { ...messageBody, emisorUserID, type: "text", messageVerificationStatus: messageStatusVerification }]
             });
-            setMessage("");
+            setMessages(messages => [...messages.slice(0, -1), { ...messageBody, emisorUserID, type: "text", messageVerificationStatus: messageStatusVerification }])
         } catch (error) {
-            setUnReadMessages(unReadMessages => [...unReadMessages, { ...messageBody, emisorUserID: cache.get("user-ID"), type: "text", messageVerificationStatus: messageStatusVerification }]);
+            setUnsentMessages(unSentMessages => [...unSentMessages, tempMessage]);
+            const cachedMessages = cache.get(`chat-${cache.get("chat-open")}`).messages;
+            cache.set(`chat-${cache.get("chat-open")}`, {
+                ...cache.get(`chat-${cache.get("chat-open")}`),
+                messages: [...cachedMessages, tempMessage]
+            });
         }
     }
 
