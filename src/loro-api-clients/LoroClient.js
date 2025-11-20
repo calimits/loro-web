@@ -240,7 +240,7 @@ class LoroClient {
 
     //MESSAGE ENDPOINTS
     async getMessages41Chat(chatID, start=0, limit=100) {
-        const messages = await this.#httpHelper(`${this.#baseURL}/messages/${chatID}/${this.#userID}?start=${start}&limit=${limit}`, {
+        const messages = await this.#httpHelper.get(`${this.#baseURL}/messages/${chatID}/${this.#userID}?start=${start}&limit=${limit}`, {
             headers: {
                 'Authorization': `Bearer ${this.#accessToken}`
             }

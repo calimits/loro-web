@@ -5,25 +5,25 @@ import MessageBar from "../MessageBar"
 import { useEffect, useState } from "react"
 import { loroClient } from "../../loro-api-clients/loroClientInstance"
 import cache from "../../utils/chache-ram"
+import { useConversation } from "../ConversationContext"
 
 export default function Chat({ classNames = "" }) {
+    const { chatOpenID } = useConversation();
+
     const [messages, setMessages] = useState([]);
-    const [start, setStart] = useState(cache.has(`chat-${cache.get("chat-open")}`) ?
-        cache.get(`chat-${cache.get("chat-open")}`).start : 0
-    );
-    const [limit, setLimit] = useState(cache.has(`chat-${cache.get("chat-open")}`) ?
-        cache.get(`chat-${cache.get("chat-open")}`).limit : 100
-    );
 
     useEffect(() => {
         async function fetchData() {
             const chatID = cache.get("chat-open");
-            const res = await loroClient.getMessages41Chat(chatID, start, limit)
-            setStart(start + res.length);
-            cache.set(`chat-${cache.get("chat-open")}`, {start, limit})
+            const start = cache.has(`chat-${cache.get("chat-open")}`) ? cache.get(`chat-${cache.get("chat-open")}`).start : 0;
+            const limit = 100;
+            const res = await loroClient.getMessages41Chat(chatID, start, limit);
+            setMessages(res)
+            cache.set(`chat-${cache.get("chat-open")}`, { start: start + res.length, limit, messages: [...res] })
         }
-        fetchData();
-    }, [])
+        if (!cache.has(`chat-${cache.get("chat-open")}`)) fetchData();
+        if (cache.has(`chat-${cache.get("chat-open")}`)) setMessages(cache.get(`chat-${chatOpenID}`).messages);
+    }, [chatOpenID])
 
     return (
         <div className={`chat ${classNames}`}>

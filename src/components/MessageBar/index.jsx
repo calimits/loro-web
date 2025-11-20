@@ -35,6 +35,11 @@ export default function MessageBar({ setMessages }) {
         try {
             await loroClient.sendTextMessage(messageBody);
             setMessages(messages => [...messages, { ...messageBody, emisorUserID: cache.get("user-ID"), type: "text", messageVerificationStatus: messageStatusVerification }]);
+            const cachedMessages = cache.get(`chat-${cache.get("chat-open")}`).messages;
+            cache.set(`chat-${cache.get("chat-open")}`, {
+                ...cache.get(`chat-${cache.get("chat-open")}`),
+                messages: [...cachedMessages, { ...messageBody, emisorUserID: cache.get("user-ID"), type: "text", messageVerificationStatus: messageStatusVerification }]
+            });
             setMessage("");
         } catch (error) {
             setUnReadMessages(unReadMessages => [...unReadMessages, { ...messageBody, emisorUserID: cache.get("user-ID"), type: "text", messageVerificationStatus: messageStatusVerification }]);

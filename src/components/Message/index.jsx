@@ -3,7 +3,7 @@ import "./Message.css"
 
 export default function Message({classNames, content, sended, time, statusVerification}) {
     const d = new Date(time); 
-    const [date, setDate] = useState(`${d.getMonth()}/${d.getDay()}-${d.getHours()}:${d.getMinutes()}`)
+    const [date, setDate] = useState(`${d.getMonth()}/${d.getDate()}-${d.getHours()}:${d.getMinutes()}`)
     
     return(
         <div className={`${classNames} message`}>

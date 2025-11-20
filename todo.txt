@@ -1,1 +1,1 @@
--arreglar cliuckeado de chats para q renderice nuevo chat
+-anadir refetch a los chats para obtener los mensajes
