@@ -11,7 +11,10 @@ export default function Chat({ classNames = "" }) {
     const { chatOpenID } = useConversation();
 
     const [messages, setMessages] = useState([]);
-    const [deleteMsg, setDeleteMsg] = useState(true);
+    const [deleteMsg, setDeleteMsg] = useState(false);
+    const [selectedMsgs, setSelectedMsgs] = useState([]);
+
+    const messageStates = {messages, setMessages, deleteMsg, setDeleteMsg, selectedMsgs, setSelectedMsgs};
 
     useEffect(() => {
         async function fetchData() {
@@ -28,8 +31,8 @@ export default function Chat({ classNames = "" }) {
 
     return (
         <div className={`chat ${classNames}`}>
-            <ChatHeader deleteMsg={deleteMsg}/>
-            <MessageBox messages={messages} setMessages={setMessages} deleteMsg={deleteMsg} setDeleteMsg={setDeleteMsg}/>
+            <ChatHeader messageStates={messageStates}/>
+            <MessageBox messageStates={messageStates}/>
             <MessageBar setMessages={setMessages} />
         </div>
     )

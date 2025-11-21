@@ -1,18 +1,42 @@
 import { useState } from "react";
 import "./Message.css"
 
-export default function Message({classNames, message, deleteMsg, setDeleteMsg}) {
-    const d = new Date(message.dateTime); 
-    const [date, setDate] = useState(`${d.getMonth()}/${d.getDate()}-${d.getHours()}:${d.getMinutes()}`)
+export default function Message({ classNames, message, messageStates }) {
+    let startDeleteTimeout;
+    const d = new Date(message.dateTime);
+    const { deleteMsg, setDeleteMsg, setSelectedMsgs } = messageStates;
 
-    return(
-        <div className={`${classNames} message`}>
+    const [date, setDate] = useState(`${d.getMonth()}/${d.getDate()}-${d.getHours()}:${d.getMinutes()}`);
+
+    const handleMouseDown = (e) => {
+        startDeleteTimeout = setTimeout(() => {
+            setDeleteMsg(true);
+        }, 1200);
+    }
+
+    const handleMouseUp = (e) => {
+        if (startDeleteTimeout) clearTimeout(startDeleteTimeout);
+    }
+
+    const handleCheck = (e) => {
+        if (e.target.checked) setSelectedMsgs((selected) => [...selected, message._id]);
+        if (!e.target.checked) setSelectedMsgs((selected) => {
+            const filtered = selected.filter(el => el !== message._id);
+            return [...filtered];
+        });
+    }
+
+
+
+    return (
+        <div className={`${classNames} message`} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}
+            onTouchStart={handleMouseDown} onTouchEnd={handleMouseUp}>
             <p className="text-message">{message.content}</p>
             <div className="to-the-right flex-container">
                 {!message.unSent ? <p className="text-message small-info-text">✔</p> : null}
                 {message.messageVerificationStatus.length === 1 && message.messageVerificationStatus.isRecieved ? <p className="small-info-text">✔</p> : null}
-                <p className="text-message small-info-text">{date}</p>
-                {deleteMsg ? <input className="margin-rem" type="checkbox"/> : null}
+                <p className="text-message small-info-text ">{date}</p>
+                {deleteMsg ? <input className="margin-rem" type="checkbox" onChange={handleCheck}/> : null}
             </div>
         </div>
     )

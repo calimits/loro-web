@@ -1,4 +1,9 @@
 -anadir refetch a los chats para obtener los mensajes
+-que solo salga el checkbox a los mensajes del usuario, no los recibidos
+-al enviar un mensaje con exito, que el back devuelva su id
+-implementar en loroclient getUnrecievedMessages y ya pasar a lo global
+
+//GLOBAL BEHAVIOR
 -anadir a envio de mensaje, identificacion de error red o servidor
 y guardarlos con una etiqueta distinta para cada tipo de error, 
 en el contexto crear un useEffect para los unSentMessages que revise

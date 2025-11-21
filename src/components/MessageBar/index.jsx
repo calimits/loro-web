@@ -14,9 +14,7 @@ export default function MessageBar({ setMessages }) {
         setMessage(e.target.value);
     }
 
-    const handleSendMessage = async (e) => {
-        if (message.length === 0) return;
-
+    const buildMessage = () => {
         const date = new Date().toISOString();
         const messageBody = { dateTime: date, chatID: cache.get("chat-open"), content: message };
         const chatOpen = cache.get("chat-open");
@@ -40,6 +38,13 @@ export default function MessageBar({ setMessages }) {
             unSent: true
         };
 
+        return { tempMessage, messageBody, emisorUserID, messageStatusVerification };
+    }
+
+    const handleSendMessage = async (e) => {
+        if (message.length === 0) return;
+
+        const { tempMessage, messageBody, emisorUserID, messageStatusVerification } = buildMessage();
         setMessages(messages => [...messages, tempMessage]);
         setMessage("");
 
@@ -52,11 +57,14 @@ export default function MessageBar({ setMessages }) {
             });
             setMessages(messages => [...messages.slice(0, -1), { ...messageBody, emisorUserID, type: "text", messageVerificationStatus: messageStatusVerification }])
         } catch (error) {
-            setUnsentMessages(unSentMessages => [...unSentMessages, tempMessage]);
+            let errType = "";
+            if (!navigator.online) errType = "offline";
+            if (error.errCode >= 400 || error.errCode === undefined) errType = "server";
+            setUnsentMessages(unSentMessages => [...unSentMessages, {...tempMessage, sendError: errType}]);
             const cachedMessages = cache.get(`chat-${cache.get("chat-open")}`).messages;
             cache.set(`chat-${cache.get("chat-open")}`, {
                 ...cache.get(`chat-${cache.get("chat-open")}`),
-                messages: [...cachedMessages, tempMessage]
+                messages: [...cachedMessages, {...tempMessage, sendError: errType}]
             });
         }
     }
