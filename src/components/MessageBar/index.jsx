@@ -49,13 +49,14 @@ export default function MessageBar({ setMessages }) {
         setMessage("");
 
         try {
-            await loroClient.sendTextMessage(messageBody);
+            let res = await loroClient.sendTextMessage(messageBody);
+            res = await res.json();
             const cachedMessages = cache.get(`chat-${cache.get("chat-open")}`).messages;
             cache.set(`chat-${cache.get("chat-open")}`, {
                 ...cache.get(`chat-${cache.get("chat-open")}`),
-                messages: [...cachedMessages, { ...messageBody, emisorUserID, type: "text", messageVerificationStatus: messageStatusVerification }]
+                messages: [...cachedMessages, { ...messageBody, _id: res.msgID, emisorUserID, type: "text", messageVerificationStatus: messageStatusVerification }]
             });
-            setMessages(messages => [...messages.slice(0, -1), { ...messageBody, emisorUserID, type: "text", messageVerificationStatus: messageStatusVerification }])
+            setMessages(messages => [...messages.slice(0, -1), { ...messageBody, _id: res.msgID, emisorUserID, type: "text", messageVerificationStatus: messageStatusVerification }])
         } catch (error) {
             let errType = "";
             if (!navigator.online) errType = "offline";

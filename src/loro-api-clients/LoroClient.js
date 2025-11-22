@@ -248,6 +248,16 @@ class LoroClient {
         return messages;
     }
 
+    async getAllUnrecievedMessages41User(start=0, limit=100000) {
+        const res = await this.#httpHelper.get(`${this.#baseURL}/messages/all/unrecieved/${this.#userID}`, {
+            headers: {
+                'Authorization': `Bearer ${this.#accessToken}`
+            }
+        });
+
+        return res;
+    }
+
     async sendTextMessage(message) {
         const formData = new FormData();
         formData.append("dateTime", message.dateTime);
@@ -256,13 +266,15 @@ class LoroClient {
         formData.append("emisorUserID", this.#userID);
         formData.append("content", message.content);
 
-        await fetch(`${this.#baseURL}/messages/send-one`, {
+        const res = await fetch(`${this.#baseURL}/messages/send-one`, {
             method: "POST",
             headers: {
                 'Authorization': `Bearer ${this.#accessToken}`
             },
             body: formData
         });
+
+        return res;
     }
 
     async deleteManyMessages(chatID, msgIDs) {

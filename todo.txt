@@ -1,7 +1,8 @@
 -anadir refetch a los chats para obtener los mensajes
--que solo salga el checkbox a los mensajes del usuario, no los recibidos
--al enviar un mensaje con exito, que el back devuelva su id
--implementar en loroclient getUnrecievedMessages y ya pasar a lo global
+-al reenviar varios mensajes con exito, que el back devuelva sus ids
+-arreglar modal de admins en chat info y sus operaciones con permisos
+
+
 
 //GLOBAL BEHAVIOR
 -anadir a envio de mensaje, identificacion de error red o servidor

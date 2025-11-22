@@ -22,6 +22,7 @@ export default function Chat({ classNames = "" }) {
             const start = cache.has(`chat-${cache.get("chat-open")}`) ? cache.get(`chat-${cache.get("chat-open")}`).start : 0;
             const limit = 100;
             const res = await loroClient.getMessages41Chat(chatID, start, limit);
+            //const res = await loroClient.getAllUnrecievedMessages41User();
             setMessages(res)
             cache.set(`chat-${cache.get("chat-open")}`, { start: start + res.length, limit, messages: [...res] })
         }

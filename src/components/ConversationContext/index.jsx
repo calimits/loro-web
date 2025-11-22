@@ -31,7 +31,6 @@ const ConversationProvider = ({children}) => {
         ...setters
     }), [values, setters]);
 
-    useEffect(()=>console.log(unSentMessages), [unSentMessages]);
     return (
         <ConversationContext.Provider value={contextValues}>
             {children}

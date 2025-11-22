@@ -21,7 +21,7 @@ export default function ChatPreview({name, checks, lastMessage, time, messages, 
                         <h4 className="chat-title text">{name}</h4>
                         <div className="chat-last-message">
                             <p className="text">{checks}</p>
-                            <p className="text">{lastMessage}</p>
+                            <p className="small-info-text">{lastMessage}</p>
                         </div>
                     </div>
                 </div>

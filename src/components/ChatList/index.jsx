@@ -63,7 +63,7 @@ export default function ChatList() {
                     name={chat.name}
                     time={""}
                     checks={""}
-                    lastMessage={""}
+                    lastMessage={"Enter to see the last messages"}
                     messages={""}
                     id={chat._id}
                 />

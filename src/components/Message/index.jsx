@@ -1,5 +1,7 @@
 import { useState } from "react";
 import "./Message.css"
+import cache from "../../utils/chache-ram";
+
 
 export default function Message({ classNames, message, messageStates }) {
     let startDeleteTimeout;
@@ -10,7 +12,7 @@ export default function Message({ classNames, message, messageStates }) {
 
     const handleMouseDown = (e) => {
         startDeleteTimeout = setTimeout(() => {
-            setDeleteMsg(true);
+            if (message.emisorUserID === cache.get("user-ID")) setDeleteMsg(true);
         }, 1200);
     }
 
@@ -36,7 +38,7 @@ export default function Message({ classNames, message, messageStates }) {
                 {!message.unSent ? <p className="text-message small-info-text">✔</p> : null}
                 {message.messageVerificationStatus.length === 1 && message.messageVerificationStatus.isRecieved ? <p className="small-info-text">✔</p> : null}
                 <p className="text-message small-info-text ">{date}</p>
-                {deleteMsg ? <input className="margin-rem" type="checkbox" onChange={handleCheck}/> : null}
+                {deleteMsg && message.emisorUserID === cache.get("user-ID")? <input className="margin-rem" type="checkbox" onChange={handleCheck}/> : null}
             </div>
         </div>
     )
