@@ -58,6 +58,7 @@ export default function MessageBar({ setMessages }) {
             });
             setMessages(messages => [...messages.slice(0, -1), { ...messageBody, _id: res.msgID, emisorUserID, type: "text", messageVerificationStatus: messageStatusVerification }])
         } catch (error) {
+            console.log(error.errType, error.errMessage)
             let errType = "";
             if (!navigator.online) errType = "offline";
             if (error.errCode >= 400 || error.errCode === undefined) errType = "server";
