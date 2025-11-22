@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-
+import socketioClient from "../../socket-io-client/socketioClientInstance";
 
 const ConversationContext = createContext();
 
@@ -30,6 +30,10 @@ const ConversationProvider = ({children}) => {
         ...values,
         ...setters
     }), [values, setters]);
+
+    useEffect(()=>{
+        socketioClient.listen();
+    })
 
     return (
         <ConversationContext.Provider value={contextValues}>

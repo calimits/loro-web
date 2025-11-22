@@ -1,3 +1,4 @@
+import socketioClient from "../socket-io-client/socketioClientInstance";
 import cache from "../utils/chache-ram";
 import { httpHelper } from "./HttpHelperInstance";
 
@@ -56,6 +57,7 @@ class LoroClient {
         this.#userID = res.userID;
         cache.set("acces-token", res.token);
         cache.set("user-ID", res.userID);
+        socketioClient.emmitInfoEvent();
     }
 
     async logout() {
@@ -68,6 +70,7 @@ class LoroClient {
         this.#userID = res.userID;
         cache.set("acces-token", res.token);
         cache.set("user-ID", res.userID);
+        socketioClient.emmitInfoEvent();
     }
 
     async putUserName(name) {
