@@ -2,7 +2,11 @@
 -al reenviar varios mensajes con exito, que el back devuelva sus ids
 -arreglar modal de admins en chat info y sus operaciones con permisos
 -modificar el messagebox el manejo del scroll
--romper el socket-client y implementarlo en el conversation context
+
+*******************ESTOSSSSSS HAZ AHORA*****************************
+-quitar checks de mensajes que no envio el usuario
+-manejar cheks de recibo de mensajes
+-en los grupos, manejar para identificar de quienes son los mensjaes en la ui
 
 
 //GLOBAL BEHAVIOR

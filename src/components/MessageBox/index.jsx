@@ -6,8 +6,10 @@ import "./MessageBox.css"
 
 export default function MessageBox({ messageStates }) {
     const userID = cache.get("user-ID");
+    const chatID = cache.get("chat-open");
     const msgContainerRef = useRef(null);
 
+    console.log(messageStates);
     useEffect(() => {
         const msgContainer = msgContainerRef.current;
         if (msgContainer) {

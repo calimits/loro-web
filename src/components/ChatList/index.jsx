@@ -8,7 +8,7 @@ import useInfiniteScroll from "../../custom-hooks/useInfiniteScroll";
 import FetchBtn from "../FetchBtn";
 
 export default function ChatList() {
-    const { chats, setChats } = useConversation();
+    const { chats, setChats, unRecievedMessages } = useConversation();
     const [start, setStart] = useState(cache.get("chats").start);
     const [limit, setLimit] = useState(cache.get("chats").limit);
     const [error, setError] = useState(false);
@@ -63,8 +63,8 @@ export default function ChatList() {
                     name={chat.name}
                     time={""}
                     checks={""}
-                    lastMessage={"Enter to see the last messages"}
-                    messages={""}
+                    lastMessage={unRecievedMessages.has(chat._id) ? unRecievedMessages.get(chat._id)[0].content :"Enter to see the last messages"}
+                    messages={unRecievedMessages.has(chat._id) ? unRecievedMessages.get(chat._id).length : ""}
                     id={chat._id}
                 />
             ))) : <FetchBtn onClick={fetchChats} />}
