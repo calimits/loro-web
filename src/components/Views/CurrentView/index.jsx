@@ -44,7 +44,7 @@ export default function CurrentView() {
                     <View view="add-contact" element={<ContactForm classNames={isMobile && chatOpen ? "hide" : "view"}/>}/>
                     <View view="contact-info" element={<ContactInfo classNames={isMobile && chatOpen ? "hide" : "view"}/>}/>
                     <View view="select-contacts" element={<ContactsSelector classNames={isMobile && chatOpen ? "hide" : "view"}/>}/>
-                    <View view="new-chat" element={<ChatForm/>}/>
+                    <View view="new-chat" element={<ChatForm classNames={isMobile && chatOpen ? "hide" : "view"}/>}/>
                 </ViewManeger>
             </CurrentViewProvider>
             {chatOpen ? 

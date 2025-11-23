@@ -28,7 +28,7 @@ export default function ChatForm({classNames}) {
                     <h2 className="app-title">New Chat</h2>
                 </div>
             </header>
-            <form className="profile-info-container" onSubmit={onsubmit}>
+            <form className="profile-info-container overflow-scroll" onSubmit={onsubmit}>
                 <img src={chatPic} alt="Profile Photo" className="profile-photo" />
                 <div className="profile-info-box">
                     <label className="info-label" htmlFor="chatName">@</label>

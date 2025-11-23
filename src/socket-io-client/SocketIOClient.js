@@ -10,12 +10,16 @@ class SocketIOClient {
 
     connectionEvent() {
         this.#socket.on("connect", ()=>{
-            console.log(this.#socket)
+            console.log(this.#socket);
+            if (cache.has('user-ID')) this.#socket.emit("info", {id: cache.get('user-ID')});
         });
     }
 
     onMessageEvent() {
-        this.#socket.on("onMessage", (data)=>console.log(data));
+        this.#socket.on("onMessage", (data, ack)=> {
+            console.log(data);
+            ack({error: false, data: [{status: 200}]});
+    });
     }
 
     emmitInfoEvent() {
@@ -24,6 +28,7 @@ class SocketIOClient {
 
     listen() {
         this.connectionEvent();
+        this.onMessageEvent();
     }
 }
 

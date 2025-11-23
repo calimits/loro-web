@@ -33,7 +33,7 @@ const ConversationProvider = ({children}) => {
 
     useEffect(()=>{
         socketioClient.listen();
-    })
+    }, []);
 
     return (
         <ConversationContext.Provider value={contextValues}>
