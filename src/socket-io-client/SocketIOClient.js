@@ -19,7 +19,7 @@ class SocketIOClient {
         this.#socket.on("onMessage", (data, ack)=> {
             console.log(data);
             ack({error: false, data: [{status: 200}]});
-    });
+        });
     }
 
     emmitInfoEvent() {

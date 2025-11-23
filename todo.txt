@@ -1,8 +1,8 @@
 -anadir refetch a los chats para obtener los mensajes
 -al reenviar varios mensajes con exito, que el back devuelva sus ids
 -arreglar modal de admins en chat info y sus operaciones con permisos
--manejar correctamente el emit info event
-
+-modificar el messagebox el manejo del scroll
+-romper el socket-client y implementarlo en el conversation context
 
 
 //GLOBAL BEHAVIOR
