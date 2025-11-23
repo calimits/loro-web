@@ -10,26 +10,18 @@ class SocketIOClient {
 
     connectionEvent() {
         this.#socket.on("connect", ()=>{
-            console.log(this.#socket);
             if (cache.has('user-ID')) this.#socket.emit("info", {id: cache.get('user-ID')});
         });
     }
 
-    onMessageEvent() {
-        this.#socket.on("onMessage", (data, ack)=> {
-            console.log(data);
-            ack({error: false, data: [{status: 200}]});
-        });
+    onMessageEvent(callback) {
+        this.#socket.on("onMessage", callback);
     }
 
     emmitInfoEvent() {
         this.#socket.emit("info", {id: cache.get('user-ID')});
     }
 
-    listen() {
-        this.connectionEvent();
-        this.onMessageEvent();
-    }
 }
 
 export default SocketIOClient;
