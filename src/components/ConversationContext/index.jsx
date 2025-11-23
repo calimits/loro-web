@@ -13,14 +13,14 @@ const ConversationProvider = ({children}) => {
     const [unRecievedChats, setUnRecievedChats] = useState([]);
     
     //message states
-    const [unReadMessages, setUnReadMessages] = useState([]);
+    const [unRecievedMessages, setUnRecievedMessages] = useState(new Map());
     const [unSentMessages, setUnsentMessages] = useState([]);
     const [msgStatus4Update, setMsgStatus4Update] = useState([]);
     
     
     const setters = useMemo(()=>({
         setChats,
-        setUnReadMessages,
+        setUnRecievedMessages,
         setChatOpen,
         setChatOpenID, 
         setUnsentMessages,
@@ -30,13 +30,13 @@ const ConversationProvider = ({children}) => {
 
     const values = useMemo(()=>({
         chats,
-        unReadMessages,
+        unRecievedMessages,
         chatOpen,
         chatOpenID,
         unSentMessages,
         unRecievedChats,
         msgStatus4Update
-    }), [chats, unReadMessages, chatOpen, chatOpenID, unSentMessages, unRecievedChats, msgStatus4Update]);
+    }), [chats, unRecievedMessages, chatOpen, chatOpenID, unSentMessages, unRecievedChats, msgStatus4Update]);
 
     const contextValues = useMemo(()=>({
         ...values,
@@ -59,7 +59,10 @@ const ConversationProvider = ({children}) => {
         const userID = cache.get("user-ID");
         if (msg.emisorUserID !== userID) {
             msg.messageVerificationStatus.find(u => u.receptorUserID === userID).isRecieved = true;
-            setUnReadMessages([msg, ...unReadMessages]);
+            setUnRecievedMessages(msgs => {
+                if (msgs.has(msg.chat_id)) return new Map(msgs).set(msg.chat_id, [msg, ...msgs.get(msg.chat_id)]);
+                return new Map(msgs).set(msg.chat_id, [msg]);
+            });
             setChats(prevChats => {
                 let chat = prevChats.find(c => c._id === msg.chat_id);
                 if (!chat) {
@@ -80,7 +83,7 @@ const ConversationProvider = ({children}) => {
         ack({error: false});
     }
 
-    useEffect(()=>console.log(unReadMessages), [unReadMessages]);
+    useEffect(()=>console.log(unRecievedMessages), [unRecievedMessages]);
 
     useEffect(()=>{
         socketioClient.connectionEvent();
