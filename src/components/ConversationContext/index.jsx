@@ -6,30 +6,37 @@ import { loroClient } from "../../loro-api-clients/loroClientInstance";
 const ConversationContext = createContext();
 
 const ConversationProvider = ({children}) => {
+    //chats states
     const [chats, setChats] = useState([]);
-    const [unRecievedChats, setUnRecievedChats] = useState([]);
-    const [unRecievedMessages, setUnRecievedMessages] = useState([]);
-    const [unSentMessages, setUnsentMessages] = useState([]);
     const [chatOpen, setChatOpen] = useState(false);
     const [chatOpenID, setChatOpenID] = useState("");
+    const [unRecievedChats, setUnRecievedChats] = useState([]);
+    
+    //message states
+    const [unReadMessages, setUnReadMessages] = useState([]);
+    const [unSentMessages, setUnsentMessages] = useState([]);
+    const [msgStatus4Update, setMsgStatus4Update] = useState([]);
+    
     
     const setters = useMemo(()=>({
         setChats,
-        setUnRecievedMessages,
+        setUnReadMessages,
         setChatOpen,
         setChatOpenID, 
         setUnsentMessages,
-        setUnRecievedChats
+        setUnRecievedChats,
+        setMsgStatus4Update
     }), []);
 
     const values = useMemo(()=>({
         chats,
-        unRecievedMessages,
+        unReadMessages,
         chatOpen,
         chatOpenID,
         unSentMessages,
-        unRecievedChats
-    }), [chats, unRecievedMessages, chatOpen, chatOpenID, unSentMessages, unRecievedChats]);
+        unRecievedChats,
+        msgStatus4Update
+    }), [chats, unReadMessages, chatOpen, chatOpenID, unSentMessages, unRecievedChats, msgStatus4Update]);
 
     const contextValues = useMemo(()=>({
         ...values,
@@ -52,7 +59,7 @@ const ConversationProvider = ({children}) => {
         const userID = cache.get("user-ID");
         if (msg.emisorUserID !== userID) {
             msg.messageVerificationStatus.find(u => u.receptorUserID === userID).isRecieved = true;
-            setUnRecievedMessages([msg, ...unRecievedMessages]);
+            setUnReadMessages([msg, ...unReadMessages]);
             setChats(prevChats => {
                 let chat = prevChats.find(c => c._id === msg.chat_id);
                 if (!chat) {
@@ -65,14 +72,20 @@ const ConversationProvider = ({children}) => {
             });
         }
 
-        ack({error: false, data: [{status: 200}]});
+        ack({error: false, data: [{receptorUserID: userID}]});
     }
 
-    useEffect(()=>console.log(unRecievedMessages), [unRecievedMessages]);
+    const onMessagesStatusUpdate = (data, ack) => {
+        setMsgStatus4Update(msg => [...msg, data]);
+        ack({error: false});
+    }
+
+    useEffect(()=>console.log(unReadMessages), [unReadMessages]);
 
     useEffect(()=>{
         socketioClient.connectionEvent();
         socketioClient.onMessageEvent(onMessage);
+        socketioClient.onMessagesStatusUpdateEvent(onMessagesStatusUpdate);
     }, []);
 
     return (

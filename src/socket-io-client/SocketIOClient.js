@@ -8,6 +8,10 @@ class SocketIOClient {
         this.#socket = io('http://localhost:3000');
     }
 
+    emit(event, data) {
+        this.#socket.emit(event, data);
+    }
+
     connectionEvent() {
         this.#socket.on("connect", ()=>{
             if (cache.has('user-ID')) this.#socket.emit("info", {id: cache.get('user-ID')});
@@ -16,6 +20,10 @@ class SocketIOClient {
 
     onMessageEvent(callback) {
         this.#socket.on("onMessage", callback);
+    }
+
+    onMessagesStatusUpdateEvent(callback) {
+        this.#socket.on("onMessageStatusUpdate", callback);
     }
 
     emmitInfoEvent() {
