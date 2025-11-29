@@ -8,9 +8,9 @@ import cache from "../../utils/chache-ram"
 import { useConversation } from "../ConversationContext"
 
 export default function Chat({ classNames = "" }) {
-    const { chatOpenID, unRecievedMessages, setUnRecievedMessages } = useConversation();
+    const { chatOpenID, unRecievedMessages, setUnRecievedMessages, messages, setMessages } = useConversation();
 
-    const [messages, setMessages] = useState([]);
+    //const [messages, setMessages] = useState([]);
     const [deleteMsg, setDeleteMsg] = useState(false);
     const [selectedMsgs, setSelectedMsgs] = useState([]);
 
@@ -31,9 +31,10 @@ export default function Chat({ classNames = "" }) {
     }, [chatOpenID])
 
     const updateMsgs = () => {
-        console.log(unRecievedMessages)
         messageStates.setMessages(msgs => [...msgs, ...unRecievedMessages.get(chatOpenID)]);
-        cache.set(`chat-${chatOpenID}`, {...cache.get(`chat-${chatOpenID}`), messages: [...cache.get(`chat-${chatOpenID}`).messages, ...unRecievedMessages.get(chatOpenID)]});
+        const currentMsgs = cache.has(`chat-${chatOpenID}`) ? cache.get(`chat-${chatOpenID}`).messages : [];
+        const updateMsgs = [...currentMsgs, ...unRecievedMessages.get(chatOpenID)]
+        cache.set(`chat-${chatOpenID}`, {...cache.get(`chat-${chatOpenID}`), messages: updateMsgs});
         setUnRecievedMessages(prevMsgs => {
             const newMsgs = new Map(prevMsgs);
             newMsgs.delete(chatOpenID);

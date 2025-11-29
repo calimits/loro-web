@@ -9,7 +9,6 @@ export default function MessageBox({ messageStates }) {
     const chatID = cache.get("chat-open");
     const msgContainerRef = useRef(null);
 
-    console.log(messageStates);
     useEffect(() => {
         const msgContainer = msgContainerRef.current;
         if (msgContainer) {

@@ -5,40 +5,43 @@ import { loroClient } from "../../loro-api-clients/loroClientInstance";
 
 const ConversationContext = createContext();
 
-const ConversationProvider = ({children}) => {
+const ConversationProvider = ({ children }) => {
     //chats states
     const [chats, setChats] = useState([]);
     const [chatOpen, setChatOpen] = useState(false);
     const [chatOpenID, setChatOpenID] = useState("");
     const [unRecievedChats, setUnRecievedChats] = useState([]);
-    
+
     //message states
+    const [messages, setMessages] = useState([]);
     const [unRecievedMessages, setUnRecievedMessages] = useState(new Map());
     const [unSentMessages, setUnsentMessages] = useState([]);
     const [msgStatus4Update, setMsgStatus4Update] = useState([]);
-    
-    
-    const setters = useMemo(()=>({
+
+
+    const setters = useMemo(() => ({
         setChats,
         setUnRecievedMessages,
         setChatOpen,
-        setChatOpenID, 
+        setChatOpenID,
         setUnsentMessages,
         setUnRecievedChats,
-        setMsgStatus4Update
+        setMsgStatus4Update,
+        setMessages
     }), []);
 
-    const values = useMemo(()=>({
+    const values = useMemo(() => ({
         chats,
         unRecievedMessages,
         chatOpen,
         chatOpenID,
         unSentMessages,
         unRecievedChats,
-        msgStatus4Update
-    }), [chats, unRecievedMessages, chatOpen, chatOpenID, unSentMessages, unRecievedChats, msgStatus4Update]);
+        msgStatus4Update,
+        messages
+    }), [chats, messages, unRecievedMessages, chatOpen, chatOpenID, unSentMessages, unRecievedChats, msgStatus4Update]);
 
-    const contextValues = useMemo(()=>({
+    const contextValues = useMemo(() => ({
         ...values,
         ...setters
     }), [values, setters]);
@@ -54,8 +57,42 @@ const ConversationProvider = ({children}) => {
         }
     }
 
+    const updateMsgStatus = (waitTime, data) => {
+        if (waitTime > 8000) return;
+        setTimeout(() => {
+            const msg = cache.get(`chat-${data.chatID}`).messages.find(msg => msg._id === data.msgID);
+
+            //updating message state
+            setMessages(prevMsgs => {
+                let msgs = [...prevMsgs];
+                const msgState = msgs.find(msg => msg._id === data.msgID);
+                if (msgState) {
+                    msgState.messageVerificationStatus.forEach(r => {
+                        if (data.receptores.some(u => u.receptorUserID === r.receptorUserID)) {
+                            r.isRecieved = true;
+                        }
+                    });
+                    return [...msgs];
+                }
+
+                return prevMsgs;
+            });
+
+            //updating cache
+            if (msg) {
+                msg.messageVerificationStatus.forEach(r => {
+                    if (data.receptores.some(u => u.receptorUserID === r.receptorUserID)) {
+                        r.isRecieved = true;
+                    }
+                });
+            };
+
+            if (!msg) updateMsgStatus(waitTime*2, data);
+        }, waitTime);
+    }
+
     //Socket callbacks
-    const onMessage = (msg, ack)=> {
+    const onMessage = (msg, ack) => {
         const userID = cache.get("user-ID");
         if (msg.emisorUserID !== userID) {
             msg.messageVerificationStatus.find(u => u.receptorUserID === userID).isRecieved = true;
@@ -75,17 +112,18 @@ const ConversationProvider = ({children}) => {
             });
         }
 
-        ack({error: false, data: [{receptorUserID: userID}]});
+        ack({ error: false, data: [{ receptorUserID: userID }] });
     }
 
     const onMessagesStatusUpdate = (data, ack) => {
         setMsgStatus4Update(msg => [...msg, data]);
-        ack({error: false});
+        updateMsgStatus(1000, data);
+        ack({ error: false });
     }
 
-    useEffect(()=>console.log(unRecievedMessages), [unRecievedMessages]);
+    //useEffect(() => console.log(messages), [messages]);
 
-    useEffect(()=>{
+    useEffect(() => {
         socketioClient.connectionEvent();
         socketioClient.onMessageEvent(onMessage);
         socketioClient.onMessagesStatusUpdateEvent(onMessagesStatusUpdate);
@@ -104,4 +142,4 @@ const useConversation = () => {
     return context;
 }
 
-export {ConversationContext, ConversationProvider, useConversation};
+export { ConversationContext, ConversationProvider, useConversation };

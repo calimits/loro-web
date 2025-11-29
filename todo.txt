@@ -4,8 +4,7 @@
 -modificar el messagebox el manejo del scroll
 
 *******************ESTOSSSSSS HAZ AHORA*****************************
--quitar checks de mensajes que no envio el usuario
--manejar cheks de recibo de mensajes
+-en onMessageStatusUpdate, pesnar bien que hacer con los mensajes que no actualicen su etsado correctamente
 -en los grupos, manejar para identificar de quienes son los mensjaes en la ui
 
 

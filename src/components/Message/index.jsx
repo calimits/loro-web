@@ -6,6 +6,7 @@ import cache from "../../utils/chache-ram";
 export default function Message({ classNames, message, messageStates }) {
     let startDeleteTimeout;
     const d = new Date(message.dateTime);
+    const userID = cache.get("user-ID");
     const { deleteMsg, setDeleteMsg, setSelectedMsgs } = messageStates;
 
     const [date, setDate] = useState(`${d.getMonth()}/${d.getDate()}-${d.getHours()}:${d.getMinutes()}`);
@@ -35,8 +36,10 @@ export default function Message({ classNames, message, messageStates }) {
             onTouchStart={handleMouseDown} onTouchEnd={handleMouseUp}>
             <p className="text-message">{message.content}</p>
             <div className="to-the-right flex-container">
-                {!message.unSent ? <p className="text-message small-info-text">✔</p> : null}
-                {message.messageVerificationStatus.length === 1 && message.messageVerificationStatus.isRecieved ? <p className="small-info-text">✔</p> : null}
+                {!message.unSent && message.emisorUserID === userID ? <p className="text-message small-info-text">✔</p> : null}
+                {message.messageVerificationStatus.length === 1 &&
+                 message.messageVerificationStatus[0].isRecieved && 
+                 message.emisorUserID === userID? <p className="small-info-text">✔</p> : null}
                 <p className="text-message small-info-text ">{date}</p>
                 {deleteMsg && message.emisorUserID === cache.get("user-ID")? <input className="margin-rem" type="checkbox" onChange={handleCheck}/> : null}
             </div>
