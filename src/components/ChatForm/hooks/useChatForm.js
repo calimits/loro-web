@@ -1,8 +1,10 @@
 import { useState } from "react";
 import cache from "../../../utils/chache-ram";
 import { loroClient } from "../../../loro-api-clients/loroClientInstance";
+import { useConversation } from "../../ConversationContext";
 
 export default function useChatForm() {
+    const { setChats } = useConversation();
     const [members] = useState(cache.get("chat-members"));
     const [formData, setFormData] = useState({
         chatName: "",
@@ -36,11 +38,11 @@ export default function useChatForm() {
         try {
             const {_id} = await loroClient.postChat(chat);
             const chats = cache.get("chats").chats;
+            setChats(prevChats => [{...chat, _id}, ...prevChats]);
             cache.set("chats", {...cache.get("chats"), chats: [{...chat, _id}, ...chats]});
         } catch (error) {
-            console.log(error);
+            console.error("Error en postChat:", error.name, error.message, error)
             setError(true);
-            console.log(error.errType, error.errMessage);
         }
     }
 

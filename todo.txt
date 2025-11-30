@@ -1,11 +1,14 @@
 -anadir refetch a los chats para obtener los mensajes
 -al reenviar varios mensajes con exito, que el back devuelva sus ids
--arreglar modal de admins en chat info y sus operaciones con permisos
 -modificar el messagebox el manejo del scroll
+-cuando envies mensaje que el chat se posicione arriba
+-en los grupos, manejar para identificar de quienes son los mensjaes en la ui, 
+usar getMembers de chatEditForm
+
 
 *******************ESTOSSSSSS HAZ AHORA*****************************
--en onMessageStatusUpdate, pesnar bien que hacer con los mensajes que no actualicen su etsado correctamente
--en los grupos, manejar para identificar de quienes son los mensjaes en la ui
+-arreglar chat creation en backend, problema con sockets
+
 
 
 //GLOBAL BEHAVIOR

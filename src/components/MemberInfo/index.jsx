@@ -8,6 +8,8 @@ export default function MemberInfo({members, setMembers, memberSelected}) {
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
     
+    console.log(showOptions.isAdmin && memberSelected.isAdmin); 
+
     const handleAdd2AdminsClick = async (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -70,7 +72,7 @@ export default function MemberInfo({members, setMembers, memberSelected}) {
             <h3 className="member-name ">{memberSelected.username}</h3>
             <p className="chat-title text link">{memberSelected.email}</p>
             {memberSelected.isAdmin ? <p className='small-info-text'>Admin</p> : null}
-            {showOptions ? 
+            {showOptions.isAdmin ? 
             <div className="btn-modal-container">
                 {memberSelected.isAdmin ? 
                 <button className="modal-btn color-red"onClick={handleDeleteFromAdminsClick} >Delete from admins</button> : 

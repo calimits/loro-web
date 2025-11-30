@@ -26,6 +26,10 @@ class SocketIOClient {
         this.#socket.on("onMessageStatusUpdate", callback);
     }
 
+    onChatCreation(callback) {
+        this.#socket.on("onChatCreation", callback);
+    }
+
     emmitInfoEvent() {
         this.#socket.emit("info", {id: cache.get('user-ID')});
     }

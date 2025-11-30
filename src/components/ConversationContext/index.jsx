@@ -16,7 +16,6 @@ const ConversationProvider = ({ children }) => {
     const [messages, setMessages] = useState([]);
     const [unRecievedMessages, setUnRecievedMessages] = useState(new Map());
     const [unSentMessages, setUnsentMessages] = useState([]);
-    const [msgStatus4Update, setMsgStatus4Update] = useState([]);
 
 
     const setters = useMemo(() => ({
@@ -26,7 +25,6 @@ const ConversationProvider = ({ children }) => {
         setChatOpenID,
         setUnsentMessages,
         setUnRecievedChats,
-        setMsgStatus4Update,
         setMessages
     }), []);
 
@@ -37,9 +35,8 @@ const ConversationProvider = ({ children }) => {
         chatOpenID,
         unSentMessages,
         unRecievedChats,
-        msgStatus4Update,
         messages
-    }), [chats, messages, unRecievedMessages, chatOpen, chatOpenID, unSentMessages, unRecievedChats, msgStatus4Update]);
+    }), [chats, messages, unRecievedMessages, chatOpen, chatOpenID, unSentMessages, unRecievedChats]);
 
     const contextValues = useMemo(() => ({
         ...values,
@@ -116,17 +113,23 @@ const ConversationProvider = ({ children }) => {
     }
 
     const onMessagesStatusUpdate = (data, ack) => {
-        setMsgStatus4Update(msg => [...msg, data]);
         updateMsgStatus(1000, data);
         ack({ error: false });
     }
 
-    //useEffect(() => console.log(messages), [messages]);
+    const onChatCreation = (chat, ack) => {
+        setChats(prevChats => [{...chat}, ...prevChats]);
+        cache.set("chats", {...cache.get("chats"), chats: [{...chat}, ...chats]});
+        ack({error: false})
+    }
+    
+    //useEffect(() => console.log(chats), [chats]);
 
     useEffect(() => {
         socketioClient.connectionEvent();
         socketioClient.onMessageEvent(onMessage);
         socketioClient.onMessagesStatusUpdateEvent(onMessagesStatusUpdate);
+        socketioClient.onChatCreation(onChatCreation);
     }, []);
 
     return (
