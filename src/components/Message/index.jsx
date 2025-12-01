@@ -3,11 +3,11 @@ import "./Message.css"
 import cache from "../../utils/chache-ram";
 
 
-export default function Message({ classNames, message, messageStates }) {
+export default function Message({ classNames, message, messageStates, msgNumber }) {
     let startDeleteTimeout;
     const d = new Date(message.dateTime);
     const userID = cache.get("user-ID");
-    const { deleteMsg, setDeleteMsg, setSelectedMsgs } = messageStates;
+    const { deleteMsg, setDeleteMsg, setSelectedMsgs, messages, lastMsgRef } = messageStates;
 
     const [date, setDate] = useState(`${d.getMonth()}/${d.getDate()}-${d.getHours()}:${d.getMinutes()}`);
 
@@ -29,10 +29,8 @@ export default function Message({ classNames, message, messageStates }) {
         });
     }
 
-
-
     return (
-        <div className={`${classNames} message`} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}
+        <div ref={msgNumber === messages.length-1 ? lastMsgRef : null} className={`${classNames} message`} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}
             onTouchStart={handleMouseDown} onTouchEnd={handleMouseUp}>
             <p className="text-message">{message.content}</p>
             <div className="to-the-right flex-container">

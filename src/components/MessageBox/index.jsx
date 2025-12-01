@@ -19,7 +19,7 @@ export default function MessageBox({ messageStates }) {
     return (
         <div className="message-container" ref={msgContainerRef}>
             {messageStates.messages.map((message, i) => (
-                <Message key={i} classNames={userID === message.emisorUserID ? "sent-message" : "recieved-message"}
+                <Message key={i} msgNumber={i} classNames={userID === message.emisorUserID ? "sent-message" : "recieved-message"}
                     message={message} messageStates={messageStates} />
             ))}
         </div>

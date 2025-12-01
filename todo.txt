@@ -7,6 +7,9 @@ usar getMembers de chatEditForm
 
 *******************ESTOSSSSSS HAZ AHORA*****************************
 -al reenviar varios mensajes con exito, que el back devuelva sus ids
+-desde chat crear un ref con useRef pasarlo en el messageStates hasta el mensaje,
+dentro del mensaje si su key que es el indice del arreglo de mensajes es la ultima de 
+los mensajes, anadirle el ref, y con este ref trabajar el scroll con scroll into view
 
 
 

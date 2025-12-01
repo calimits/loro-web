@@ -2,7 +2,7 @@ import "./Chat.css"
 import ChatHeader from "../ChatHeader"
 import MessageBox from "../MessageBox"
 import MessageBar from "../MessageBar"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { loroClient } from "../../loro-api-clients/loroClientInstance"
 import cache from "../../utils/chache-ram"
 import { useConversation } from "../ConversationContext"
@@ -13,8 +13,10 @@ export default function Chat({ classNames = "" }) {
     //const [messages, setMessages] = useState([]);
     const [deleteMsg, setDeleteMsg] = useState(false);
     const [selectedMsgs, setSelectedMsgs] = useState([]);
+    const lastMsgRef = useRef();
+    
 
-    const messageStates = {messages, setMessages, deleteMsg, setDeleteMsg, selectedMsgs, setSelectedMsgs};
+    const messageStates = {messages, setMessages, deleteMsg, setDeleteMsg, selectedMsgs, setSelectedMsgs, lastMsgRef};
 
     useEffect(() => {
         async function fetchData() {
