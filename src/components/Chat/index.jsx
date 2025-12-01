@@ -20,11 +20,11 @@ export default function Chat({ classNames = "" }) {
         async function fetchData() {
             const chatID = cache.get("chat-open");
             const start = cache.has(`chat-${cache.get("chat-open")}`) ? cache.get(`chat-${cache.get("chat-open")}`).start : 0;
-            const limit = 100;
+            const limit = 200;
             const res = await loroClient.getMessages41Chat(chatID, start, limit);
             //const res = await loroClient.getAllUnrecievedMessages41User();
-            setMessages(res)
-            cache.set(`chat-${cache.get("chat-open")}`, { start: start + res.length, limit, messages: [...res] })
+            setMessages([...res].reverse());
+            cache.set(`chat-${cache.get("chat-open")}`, { start: start + res.length, limit, messages: [...res].reverse() })
         }
         if (!cache.has(`chat-${cache.get("chat-open")}`)) fetchData();
         if (cache.has(`chat-${cache.get("chat-open")}`)) setMessages(cache.get(`chat-${chatOpenID}`).messages);

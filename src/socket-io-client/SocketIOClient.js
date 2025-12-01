@@ -26,8 +26,12 @@ class SocketIOClient {
         this.#socket.on("onMessageStatusUpdate", callback);
     }
 
-    onChatCreation(callback) {
+    onChatCreationEvent(callback) {
         this.#socket.on("onChatCreation", callback);
+    }
+
+    onMessageDeleteEvent(callback) {
+        this.#socket.on("onMessageDelete", callback);
     }
 
     emmitInfoEvent() {

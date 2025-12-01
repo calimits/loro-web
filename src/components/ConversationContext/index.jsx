@@ -122,14 +122,35 @@ const ConversationProvider = ({ children }) => {
         cache.set("chats", {...cache.get("chats"), chats: [{...chat}, ...chats]});
         ack({error: false})
     }
+
+    const onMessageDelete = (msgs, ack) => {
+        if (!cache.has(`chat-${msgs[0].chat_id}`)) return;
+
+        const chatMsgs = cache.get(`chat-${msgs[0].chat_id}`).messages;
+        let currentMsgs = [];
+        
+        msgs.forEach(msg => {
+            currentMsgs = chatMsgs.filter(m => m._id !== msg._id );
+        });
+
+        cache.set(`chat-${msgs[0].chat_id}`, {...cache.get(`chat-${msgs[0].chat_id}`), messages: currentMsgs});
+
+        setMessages(prevMsgs => {
+            if (prevMsgs.find(m => m._id === msgs[0]._id )) return [...currentMsgs];
+            return prevMsgs;
+        });
+
+        ack({error: false});
+    }
     
-    //useEffect(() => console.log(chats), [chats]);
+    //useEffect(() => console.log(messages), [messages]);
 
     useEffect(() => {
         socketioClient.connectionEvent();
         socketioClient.onMessageEvent(onMessage);
         socketioClient.onMessagesStatusUpdateEvent(onMessagesStatusUpdate);
-        socketioClient.onChatCreation(onChatCreation);
+        socketioClient.onChatCreationEvent(onChatCreation);
+        socketioClient.onMessageDeleteEvent(onMessageDelete);
     }, []);
 
     return (

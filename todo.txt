@@ -6,9 +6,7 @@ usar getMembers de chatEditForm
 
 
 *******************ESTOSSSSSS HAZ AHORA*****************************
--implementar todos los socket events
 -al reenviar varios mensajes con exito, que el back devuelva sus ids
-
 
 
 
