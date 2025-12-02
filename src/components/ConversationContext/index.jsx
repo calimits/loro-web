@@ -54,7 +54,7 @@ const ConversationProvider = ({ children }) => {
         }
     }
 
-    const updateMsgStatus = (waitTime, data) => {
+    const updateMsgStatus = (waitTime, data, ack) => {
         if (waitTime > 8000) return;
         setTimeout(() => {
             const msg = cache.get(`chat-${data.chatID}`).messages.find(msg => msg._id === data.msgID);
@@ -84,12 +84,61 @@ const ConversationProvider = ({ children }) => {
                 });
             };
 
-            if (!msg) updateMsgStatus(waitTime*2, data);
+            if (!msg) updateMsgStatus(waitTime * 2, data);
         }, waitTime);
+        ack({ error: false });
     }
 
-    //Socket callbacks
-    const onMessage = (msg, ack) => {
+    const updateManyMsgStatus = (waitTime, data, ack) => {
+        if (waitTime > 8000) return;
+        setTimeout(() => {
+            const msgs = [];
+            data.forEach((m,i) => {
+                console.log(data)
+                const msg = cache.get(`chat-${data[i].chat_id}`).messages.find(msg => msg._id === data[i].msgID);
+                msgs.push(msg);
+            })
+
+            //updating message state
+            setMessages(prevMsgs => {
+                let msgs = [...prevMsgs];
+                const msgState = [];
+                data.forEach((m,i)=>{
+                    let msg = msgs.find(msg => msg._id === data.msgID);
+                    msgState.push(msg);
+                });
+
+                if (msgState.length > 0) {
+                    msgState.forEach(m => {
+                        m.messageVerificationStatus.forEach(r => {
+                        if (data[0].receptores.some(u => u.receptorUserID === r.receptorUserID)) {
+                            r.isRecieved = true;
+                        }
+                    });
+                    })
+                    return [...msgs];
+                }
+
+                return prevMsgs;
+            });
+
+            //updating cache
+            if (msgs.length > 0) {
+                msgs.forEach(m => {
+                    m.messageVerificationStatus.forEach(r => {
+                    if (data.receptores.some(u => u.receptorUserID === r.receptorUserID)) {
+                        r.isRecieved = true;
+                    }
+                });
+                })
+            };
+
+            if (msgs.length === 0) updateMsgStatus(waitTime * 2, data);
+        }, waitTime);
+        ack({ error: false });
+    }
+
+    const saveOneMsg = (msg, ack) => {
         const userID = cache.get("user-ID");
         if (msg.emisorUserID !== userID) {
             msg.messageVerificationStatus.find(u => u.receptorUserID === userID).isRecieved = true;
@@ -112,15 +161,44 @@ const ConversationProvider = ({ children }) => {
         ack({ error: false, data: [{ receptorUserID: userID }] });
     }
 
+    const saveManyMsgs = (msg, ack) => {
+        const userID = cache.get("user-ID");
+        if (msg[0].emisorUserID !== userID) {
+            msg.forEach(m => m.messageVerificationStatus.find(u => u.receptorUserID === userID).isRecieved = true);
+            setUnRecievedMessages(msgs => {
+                if (msgs.has(msg[0].chat_id)) return new Map(msgs).set(msg[0].chat_id, [...msg, ...msgs.get(msg[0].chat_id)]);
+                return new Map(msgs).set(msg[0].chat_id, [...msg]);
+            });
+            setChats(prevChats => {
+                let chat = prevChats.find(c => c._id === msg[0].chat_id);
+                if (!chat) {
+                    addChat(msg[0].chat_id);
+                    return prevChats;
+                }
+
+                const remainChats = prevChats.filter(c => c._id !== msg[0].chat_id);
+                return [chat, ...remainChats];
+            });
+        }
+
+        ack({ error: false, data: [{ receptorUserID: userID }] });
+    }
+
+    //Socket callbacks
+    const onMessage = (msg, ack) => {
+        if (!Array.isArray(msg)) return saveOneMsg(msg, ack);
+        saveManyMsgs(msg, ack);
+    }
+
     const onMessagesStatusUpdate = (data, ack) => {
-        updateMsgStatus(1000, data);
-        ack({ error: false });
+        if (!Array.isArray(data)) return updateMsgStatus(1000, data, ack);
+        updateManyMsgStatus(1000, data, ack);
     }
 
     const onChatCreation = (chat, ack) => {
-        setChats(prevChats => [{...chat}, ...prevChats]);
-        cache.set("chats", {...cache.get("chats"), chats: [{...chat}, ...chats]});
-        ack({error: false})
+        setChats(prevChats => [{ ...chat }, ...prevChats]);
+        cache.set("chats", { ...cache.get("chats"), chats: [{ ...chat }, ...chats] });
+        ack({ error: false })
     }
 
     const onMessageDelete = (msgs, ack) => {
@@ -128,21 +206,21 @@ const ConversationProvider = ({ children }) => {
 
         const chatMsgs = cache.get(`chat-${msgs[0].chat_id}`).messages;
         let currentMsgs = [];
-        
+
         msgs.forEach(msg => {
-            currentMsgs = chatMsgs.filter(m => m._id !== msg._id );
+            currentMsgs = chatMsgs.filter(m => m._id !== msg._id);
         });
 
-        cache.set(`chat-${msgs[0].chat_id}`, {...cache.get(`chat-${msgs[0].chat_id}`), messages: currentMsgs});
+        cache.set(`chat-${msgs[0].chat_id}`, { ...cache.get(`chat-${msgs[0].chat_id}`), messages: currentMsgs });
 
         setMessages(prevMsgs => {
-            if (prevMsgs.find(m => m._id === msgs[0]._id )) return [...currentMsgs];
+            if (prevMsgs.find(m => m._id === msgs[0]._id)) return [...currentMsgs];
             return prevMsgs;
         });
 
-        ack({error: false});
+        ack({ error: false });
     }
-    
+
     //useEffect(() => console.log(messages), [messages]);
 
     useEffect(() => {

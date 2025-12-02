@@ -12,12 +12,58 @@ export default function MessageBox({ messageStates }) {
 
     const { fetchErr, fetchData, messages, members } = messageStates;
 
+    const buildMessage = (message) => {
+        const date = new Date().toISOString();
+        const messageBody = { dateTime: date, chatID: cache.get("chat-open"), content: message };
+        const chatOpen = cache.get("chat-open");
+        const emisorUserID = cache.get("user-ID");
+        const chatMembers = cache.get("chats").chats.find(chat => chat._id === chatOpen).chatUsers;
+        const messageReceptors = chatMembers.filter(member => member.userID !== emisorUserID);
+        const messageStatusVerification = [];
+        messageReceptors.forEach(receptor => {
+            messageStatusVerification.push({
+                receptorUserID: receptor.userID,
+                isRecieved: false,
+                isRead: false,
+            })
+        });
+
+        const tempMessage = {
+            ...messageBody,
+            emisorUserID,
+            type: "text",
+            messageVerificationStatus: messageStatusVerification,
+            unSent: true
+        };
+
+        return { tempMessage, messageBody, emisorUserID, messageStatusVerification };
+    }
+
+
     useEffect(() => {
         const msgContainer = msgContainerRef.current;
         if (msgContainer) {
             msgContainer.scrollTop = msgContainer.scrollHeight; // mueve el scroll al final
         }
     }, [messages, members]);
+
+    useEffect(()=>{
+        async function postData() {
+            try {
+                const { messageBody } = buildMessage("hola");
+                const { messageBody2 } = buildMessage("puta");
+                const msgs = [
+                    {...messageBody, type: "text", emisorUserID: cache.get("user-ID"), chat_id: messageBody.chatID},
+                    {...messageBody, type: "text", emisorUserID: cache.get("user-ID"), chat_id: messageBody.chatID}
+                ];
+                console.log(msgs)
+                await loroClient.sendManyTextMessages(msgs);
+            } catch (error) {
+                console.log(error.errType, error.errMessage);
+            }
+        }
+        postData();
+    }, [])
 
     return (
         <div className="message-container" ref={msgContainerRef}>

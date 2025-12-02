@@ -1,5 +1,10 @@
 -en loroclient implementar el refresco de tokens en las funciones
 
+
+-arreglar en el back, que guarde la actualizacion de mensajes recibidos
+y que devuelva los datos necesarios para actualizar el estado en el emisor
+
+
 *******************ESTOSSSSSS HAZ AHORA*****************************
 -al reenviar varios mensajes con exito, que el back devuelva sus ids
 -modificar el messagebox el manejo del scroll: desde chat crear un ref con useRef pasarlo

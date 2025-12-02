@@ -280,6 +280,21 @@ class LoroClient {
         return res;
     }
 
+    async sendManyTextMessages(messages) {
+        const formData = new FormData();
+        formData.append("textMsgs", JSON.stringify(messages));
+
+        const res = await fetch(`${this.#baseURL}/messages/send-many`, {
+            method: "POST",
+            headers: {
+                'Authorization': `Bearer ${this.#accessToken}`
+            },
+            body: formData
+        });
+
+        return res;
+    }
+
     async deleteManyMessages(chatID, msgIDs) {
         const body = { msgIDs };
         this.#httpHelper.delete(`${this.#baseURL}/messages/delete-many/${chatID}/${this.#userID}`, {
