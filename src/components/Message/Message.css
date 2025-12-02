@@ -9,6 +9,10 @@
     cursor: pointer;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 .text-message {
     margin: 0.1rem;
     margin-left: .7rem;

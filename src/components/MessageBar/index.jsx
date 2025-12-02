@@ -8,7 +8,8 @@ import { useConversation } from "../ConversationContext";
 
 export default function MessageBar({ setMessages }) {
     const [message, setMessage] = useState("");
-    const { setUnsentMessages } = useConversation();
+    const { setUnsentMessages, setChats } = useConversation();
+    const chatID = cache.get("chat-open");
 
     const handleChange = (e) => {
         setMessage(e.target.value);
@@ -62,11 +63,17 @@ export default function MessageBar({ setMessages }) {
             let errType = "";
             if (!navigator.online) errType = "offline";
             if (error.errCode >= 400 || error.errCode === undefined) errType = "server";
-            setUnsentMessages(unSentMessages => [...unSentMessages, {...tempMessage, sendError: errType}]);
+            setUnsentMessages(unSentMessages => [...unSentMessages, { ...tempMessage, sendError: errType }]);
             const cachedMessages = cache.get(`chat-${cache.get("chat-open")}`).messages;
             cache.set(`chat-${cache.get("chat-open")}`, {
                 ...cache.get(`chat-${cache.get("chat-open")}`),
-                messages: [...cachedMessages, {...tempMessage, sendError: errType}]
+                messages: [...cachedMessages, { ...tempMessage, sendError: errType }]
+            });
+        } finally {
+            setChats(prevChats => {
+                let chat = prevChats.find(c => c._id === chatID);
+                const remainChats = prevChats.filter(c => c._id !== chatID);
+                return [chat, ...remainChats];
             });
         }
     }

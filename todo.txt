@@ -1,7 +1,3 @@
-
--cuando envies mensaje que el chat se posicione arriba
--en los grupos, manejar para identificar de quienes son los mensjaes en la ui, 
-usar getMembers de chatEditForm
 -en loroclient implementar el refresco de tokens en las funciones
 
 *******************ESTOSSSSSS HAZ AHORA*****************************

@@ -15,6 +15,16 @@ export default function Chat({ classNames = "" }) {
     const [fetchErr, setFetchErr] = useState(false);
     const lastMsgRef = useRef();
 
+    const [members, setMembers] = useState([]);
+
+
+    const getMembers = async () => {
+        const chatUsers = cache.get("chats").chats.find(chat => chat._id === cache.get("chat-open")).chatUsers;
+        let userIDs = [];
+        chatUsers.forEach((user => userIDs.push(user.userID)));
+        const users = await loroClient.getManyUsersByID(userIDs);
+        setMembers(users);
+    }
 
     const getMessages = async () => {
         try {
@@ -27,6 +37,11 @@ export default function Chat({ classNames = "" }) {
         } catch (error) {
             setFetchErr(true);
         }
+    }
+
+    const fetchData = async () => {
+        await getMessages();
+        await getMembers()
     }
 
     const updateMsgs = () => {
@@ -50,15 +65,20 @@ export default function Chat({ classNames = "" }) {
         setSelectedMsgs, 
         lastMsgRef, 
         fetchErr,
-        getMessages
+        fetchData,
+        members
     };
 
     useEffect(() => {
         async function fetchData() {
             getMessages();
+            getMembers();
         }
         if (!cache.has(`chat-${cache.get("chat-open")}`)) fetchData();
-        if (cache.has(`chat-${cache.get("chat-open")}`)) setMessages(cache.get(`chat-${chatOpenID}`).messages);
+        if (cache.has(`chat-${cache.get("chat-open")}`)) {
+            setMessages(cache.get(`chat-${chatOpenID}`).messages);
+            getMembers();
+        }
     }, [chatOpenID])
 
     useEffect(() => {

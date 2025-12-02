@@ -3,7 +3,7 @@ import "./Message.css"
 import cache from "../../utils/chache-ram";
 
 
-export default function Message({ classNames, message, messageStates, msgNumber }) {
+export default function Message({ classNames, message, messageStates, msgNumber, emisorName }) {
     let startDeleteTimeout;
     const d = new Date(message.dateTime);
     const userID = cache.get("user-ID");
@@ -32,6 +32,7 @@ export default function Message({ classNames, message, messageStates, msgNumber 
     return (
         <div ref={msgNumber === messages.length-1 ? lastMsgRef : null} className={`${classNames} message`} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}
             onTouchStart={handleMouseDown} onTouchEnd={handleMouseUp}>
+            {message.emisorUserID !== userID ? <p className="text-message bold">{`~${emisorName}`}</p> : null}
             <p className="text-message">{message.content}</p>
             <div className="to-the-right flex-container">
                 {!message.unSent && message.emisorUserID === userID ? <p className="text-message small-info-text">✔</p> : null}
