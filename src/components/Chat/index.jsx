@@ -9,34 +9,31 @@ import { useConversation } from "../ConversationContext"
 
 export default function Chat({ classNames = "" }) {
     const { chatOpenID, unRecievedMessages, setUnRecievedMessages, messages, setMessages } = useConversation();
-    
-    //const [messages, setMessages] = useState([]);
+
     const [deleteMsg, setDeleteMsg] = useState(false);
     const [selectedMsgs, setSelectedMsgs] = useState([]);
+    const [fetchErr, setFetchErr] = useState(false);
     const lastMsgRef = useRef();
-    
 
-    const messageStates = {messages, setMessages, deleteMsg, setDeleteMsg, selectedMsgs, setSelectedMsgs, lastMsgRef};
 
-    useEffect(() => {
-        async function fetchData() {
+    const getMessages = async () => {
+        try {
             const chatID = cache.get("chat-open");
             const start = cache.has(`chat-${cache.get("chat-open")}`) ? cache.get(`chat-${cache.get("chat-open")}`).start : 0;
             const limit = 200;
             const res = await loroClient.getMessages41Chat(chatID, start, limit);
-            //const res = await loroClient.getAllUnrecievedMessages41User();
             setMessages([...res].reverse());
             cache.set(`chat-${cache.get("chat-open")}`, { start: start + res.length, limit, messages: [...res].reverse() })
+        } catch (error) {
+            setFetchErr(true);
         }
-        if (!cache.has(`chat-${cache.get("chat-open")}`)) fetchData();
-        if (cache.has(`chat-${cache.get("chat-open")}`)) setMessages(cache.get(`chat-${chatOpenID}`).messages);
-    }, [chatOpenID])
+    }
 
     const updateMsgs = () => {
         messageStates.setMessages(msgs => [...msgs, ...unRecievedMessages.get(chatOpenID)]);
         const currentMsgs = cache.has(`chat-${chatOpenID}`) ? cache.get(`chat-${chatOpenID}`).messages : [];
         const updateMsgs = [...currentMsgs, ...unRecievedMessages.get(chatOpenID)]
-        cache.set(`chat-${chatOpenID}`, {...cache.get(`chat-${chatOpenID}`), messages: updateMsgs});
+        cache.set(`chat-${chatOpenID}`, { ...cache.get(`chat-${chatOpenID}`), messages: updateMsgs });
         setUnRecievedMessages(prevMsgs => {
             const newMsgs = new Map(prevMsgs);
             newMsgs.delete(chatOpenID);
@@ -44,7 +41,27 @@ export default function Chat({ classNames = "" }) {
         });
     }
 
-    useEffect(()=>{
+    const messageStates = {
+        messages,
+        setMessages,
+        deleteMsg, 
+        setDeleteMsg, 
+        selectedMsgs, 
+        setSelectedMsgs, 
+        lastMsgRef, 
+        fetchErr,
+        getMessages
+    };
+
+    useEffect(() => {
+        async function fetchData() {
+            getMessages();
+        }
+        if (!cache.has(`chat-${cache.get("chat-open")}`)) fetchData();
+        if (cache.has(`chat-${cache.get("chat-open")}`)) setMessages(cache.get(`chat-${chatOpenID}`).messages);
+    }, [chatOpenID])
+
+    useEffect(() => {
         if (unRecievedMessages.has(chatOpenID)) {
             updateMsgs();
         }
@@ -53,8 +70,8 @@ export default function Chat({ classNames = "" }) {
 
     return (
         <div className={`chat ${classNames}`}>
-            <ChatHeader messageStates={messageStates}/>
-            <MessageBox messageStates={messageStates}/>
+            <ChatHeader messageStates={messageStates} />
+            <MessageBox messageStates={messageStates} />
             <MessageBar setMessages={setMessages} />
         </div>
     )

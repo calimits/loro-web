@@ -6,6 +6,7 @@
     border: solid rgb(224, 224, 224) .1rem;
     width: 55%;
     border-radius: 1rem;
+    cursor: pointer;
 }
 
 .text-message {

@@ -1,15 +1,15 @@
--anadir refetch a los chats para obtener los mensajes
--modificar el messagebox el manejo del scroll
+
 -cuando envies mensaje que el chat se posicione arriba
 -en los grupos, manejar para identificar de quienes son los mensjaes en la ui, 
 usar getMembers de chatEditForm
-
+-en loroclient implementar el refresco de tokens en las funciones
 
 *******************ESTOSSSSSS HAZ AHORA*****************************
 -al reenviar varios mensajes con exito, que el back devuelva sus ids
--desde chat crear un ref con useRef pasarlo en el messageStates hasta el mensaje,
-dentro del mensaje si su key que es el indice del arreglo de mensajes es la ultima de 
-los mensajes, anadirle el ref, y con este ref trabajar el scroll con scroll into view
+-modificar el messagebox el manejo del scroll: desde chat crear un ref con useRef pasarlo
+en el messageStates hasta el mensaje,dentro del mensaje si su key que es el indice del 
+arreglo de mensajes es la ultima de los mensajes, anadirle el ref, y con este ref 
+trabajar el scroll con scroll into view
 
 
 
