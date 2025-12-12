@@ -92,26 +92,19 @@ const ConversationProvider = ({ children }) => {
     const updateManyMsgStatus = (waitTime, data, ack) => {
         if (waitTime > 8000) return;
         setTimeout(() => {
-            const msgs = [];
-            data.forEach((m,i) => {
-                console.log(data)
-                const msg = cache.get(`chat-${data[i].chat_id}`).messages.find(msg => msg._id === data[i].msgID);
-                msgs.push(msg);
-            })
+            let msgs = [];
+            msgs = cache.get(`chat-${data.chatID}`).messages.filter(msg => data.msgIDs.includes(msg._id));
 
             //updating message state
             setMessages(prevMsgs => {
                 let msgs = [...prevMsgs];
-                const msgState = [];
-                data.forEach((m,i)=>{
-                    let msg = msgs.find(msg => msg._id === data.msgID);
-                    msgState.push(msg);
-                });
+                let msgState = [];
+                msgState = msgs.filter(msg => data.msgIDs.includes(msg._id));
 
                 if (msgState.length > 0) {
                     msgState.forEach(m => {
                         m.messageVerificationStatus.forEach(r => {
-                        if (data[0].receptores.some(u => u.receptorUserID === r.receptorUserID)) {
+                        if (data.receptores.some(u => u.receptorUserID === r.receptorUserID)) {
                             r.isRecieved = true;
                         }
                     });
@@ -191,7 +184,7 @@ const ConversationProvider = ({ children }) => {
     }
 
     const onMessagesStatusUpdate = (data, ack) => {
-        if (!Array.isArray(data)) return updateMsgStatus(1000, data, ack);
+        if (!Array.isArray(data.msgIDs)) return updateMsgStatus(1000, data, ack);
         updateManyMsgStatus(1000, data, ack);
     }
 
