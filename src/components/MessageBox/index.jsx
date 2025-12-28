@@ -47,23 +47,6 @@ export default function MessageBox({ messageStates }) {
         }
     }, [messages, members]);
 
-    useEffect(()=>{
-        async function postData() {
-            try {
-                const { messageBody } = buildMessage("hola");
-                const { messageBody2 } = buildMessage("puta");
-                const msgs = [
-                    {...messageBody, type: "text", emisorUserID: cache.get("user-ID"), chat_id: messageBody.chatID},
-                    {...messageBody, type: "text", emisorUserID: cache.get("user-ID"), chat_id: messageBody.chatID}
-                ];
-                console.log(msgs)
-                await loroClient.sendManyTextMessages(msgs);
-            } catch (error) {
-                console.log(error.errType, error.errMessage);
-            }
-        }
-        postData();
-    }, [])
 
     return (
         <div className="message-container" ref={msgContainerRef}>
