@@ -23,7 +23,7 @@ function App() {
   if (isLoading) return <h2>Loading ...</h2>;
 
   return (
-      <Router>
+      <Router basename="/loro-web">
         <Routes>
           <Route path="/" element={isAuth ? <CurrentView/> : <Navigate to="/login"/>}></Route>
           <Route path="/sign-up" element={<SignUpView/>}></Route>
