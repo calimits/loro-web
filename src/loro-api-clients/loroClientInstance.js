@@ -1,5 +1,5 @@
 import { LoroClient } from "./LoroClient";
 
-const loroClient = new LoroClient("http://localhost:3000");
+const loroClient = new LoroClient("https://loro-server-production.up.railway.app");
 
 export {loroClient};
