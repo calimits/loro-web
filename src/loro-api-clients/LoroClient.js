@@ -79,12 +79,23 @@ class LoroClient {
             username: name
         }
 
-        await this.#httpHelper.put(`${this.#baseURL}/users/update/name/${this.#userID}`, {
+        try {
+            await this.#httpHelper.put(`${this.#baseURL}/users/update/name/${this.#userID}`, {
             headers: {
                 'Authorization': `Bearer ${this.#accessToken}`
             },
             body
-        });
+        });    
+        } catch (error) {
+            if (error.errCode === 401) {
+                await this.refreshTokens();
+                await this.putUserName(name);
+            } else {
+                throw error;
+            }
+            
+        }
+        
     }
 
     async putUserEmail(email) {
@@ -94,12 +105,22 @@ class LoroClient {
             email: email
         }
 
-        await this.#httpHelper.put(`${this.#baseURL}/users/update/email/${this.#userID}`, {
-            headers: {
-                'Authorization': `Bearer ${this.#accessToken}`
-            },
-            body
-        });
+        try {
+            await this.#httpHelper.put(`${this.#baseURL}/users/update/email/${this.#userID}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}`
+                },
+                body
+            });    
+        } catch (error) {
+            if (error.errCode === 401) {
+                await this.refreshTokens();
+                await this.putUserEmail(email);
+            } else {
+                throw error;
+            }
+        }
+        
     }
 
     async putUserDescription(description) {
@@ -108,12 +129,22 @@ class LoroClient {
             description: description
         }
 
-        await this.#httpHelper.put(`${this.#baseURL}/users/update/description/${this.#userID}`, {
-            headers: {
-                'Authorization': `Bearer ${this.#accessToken}`
-            },
-            body
-        });
+        try {
+            await this.#httpHelper.put(`${this.#baseURL}/users/update/description/${this.#userID}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}`
+                },
+                body
+            });
+        } catch (error) {
+            if (error.errCode === 401) {
+                await this.refreshTokens();
+                await this.putUserDescription(description);
+            } else {
+                throw error;
+            }
+        }
+        
     }
 
     async putUserPassword(currentPassword, newPassword) {
@@ -121,24 +152,46 @@ class LoroClient {
             oldPassword: currentPassword,
             newPassword: newPassword
         };
-        const user = await this.getUserByID();
-        await this.#httpHelper.put(`${this.#baseURL}/users/update/password/${user.username}`, {
-            headers: {
-                'Authorization': `Bearer ${this.#accessToken}`
-            },
-            body
-        });
+
+        try {
+            const user = await this.getUserByID();
+            await this.#httpHelper.put(`${this.#baseURL}/users/update/password/${user.username}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}`
+                },
+                body
+            });    
+        } catch (error) {
+            if (error.errCode === 401) {
+                await this.refreshTokens();
+                await this.putUserPassword(currentPassword, newPassword);
+            } else {
+                throw error;
+            }
+        }
+        
     }
 
     async deleteUser() {
-        await this.#httpHelper.delete(`${this.#baseURL}/users/${this.#userID}`, {
-            headers: {
-                'Authorization': `Bearer ${this.#accessToken}`
-            },
-            credentials: 'include'
-        });
-        this.#accessToken = null;
-        this.#userID = null;
+        
+        try {
+            await this.#httpHelper.delete(`${this.#baseURL}/users/${this.#userID}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}`
+                },
+                credentials: 'include'
+            });
+            this.#accessToken = null;
+            this.#userID = null;    
+        } catch (error) {
+            if (error.errCode === 401) {
+                await this.refreshTokens();
+                await this.deleteUser();
+            } else {
+                throw error;
+            }
+        }    
+        
     }
 
     async addContact2User(name) {
@@ -146,45 +199,86 @@ class LoroClient {
             userID: this.#userID,
             contactName: name
         };
-
-        await this.#httpHelper.post(`${this.#baseURL}/users/add-contact/${this.#userID}`, {
-            headers: {
-                'Authorization': `Bearer ${this.#accessToken}`
-            },
-            body
-        });
+        
+        try {
+            await this.#httpHelper.post(`${this.#baseURL}/users/add-contact/${this.#userID}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}`
+                },
+                body
+            }); 
+        } catch (error) {
+            if (error.errCode === 401) {
+                await this.refreshTokens();
+                await this.addContact2User(name);
+            } else {
+                throw error;
+            }
+        }    
+        
     }
 
     async getUserContacts(start = 0, limit = 50) {
-        const contacts = await this.#httpHelper.get(`${this.#baseURL}/users/contacts/${this.#userID}?start=${start}&limit=${limit}`, {
-            headers: {
-                'Authorization': `Bearer ${this.#accessToken}`
-            }
-        });
 
-        return contacts;
+        try {
+            const contacts = await this.#httpHelper.get(`${this.#baseURL}/users/contacts/${this.#userID}?start=${start}&limit=${limit}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}`
+                }
+            });
+
+            return contacts;    
+        } catch (error) {
+            if (error.errCode === 401) {
+                await this.refreshTokens();
+                const contacts = await this.getUserContacts(start, limit);
+                return contacts;
+            } else {
+                throw error;
+            }
+        }     
     }
 
     async deleteContacts(contactIDs) {
         const body = { contactIDs };
 
-        await this.#httpHelper.delete(`${this.#baseURL}/users/contacts/${this.#userID}`, {
-            headers: {
-                'Authorization': `Bearer ${this.#accessToken}`
-            },
-            body
-        });
+        try {
+            await this.#httpHelper.delete(`${this.#baseURL}/users/contacts/${this.#userID}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}`
+                },
+                body
+            });    
+        } catch (error) {
+            if (error.errCode === 401) {
+                await this.refreshTokens();
+                await this.deleteContacts(contactIDs);
+            } else {
+                throw error;
+            }
+        }    
+        
     }
 
     //CHAT ENDPOINTS FUNCTIONS
-    async getChats41User(start = 0, limit = 50) {
-        const res = await this.#httpHelper.get(`${this.#baseURL}/chats/${this.#userID}?start=${start}&limit=${limit}`, {
-            headers: {
-                'Authorization': `Bearer ${this.#accessToken}`
-            }
-        })
-
-        return res;
+    async getChats41User(start = 0, limit = 50) { 
+        try {
+            const res = await this.#httpHelper.get(`${this.#baseURL}/chats/${this.#userID}?start=${start}&limit=${limit}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}`
+                }
+            })
+            return res;
+        } catch (error) {
+            if (error.errCode === 401) {
+                await this.refreshTokens();
+                const res = await this.getChats41User(start, limit);
+                return res;
+            } else {
+                throw error;
+            }      
+        }
+        
     }
 
     async postChat(chat) {
@@ -193,72 +287,137 @@ class LoroClient {
             chat
         };
 
-        const res = await this.#httpHelper.post(`${this.#baseURL}/chats`, {
-            headers: {
-                'Authorization': `Bearer ${this.#accessToken}`
-            },
-            body
-        });
-
-        return res;
+        try {
+            const res = await this.#httpHelper.post(`${this.#baseURL}/chats`, {
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}`
+                },
+                body
+            });
+            return res;    
+        } catch (error) {
+            if (error.errCode === 401) {
+                await this.refreshTokens();
+                await this.postChat(chat);
+            } else {
+                throw error;
+            } 
+        }
+        
     }
 
     async putChatName(name, chatID) {
         const body = { name };
-        this.#httpHelper.put(`${this.#baseURL}/chats/update/name/${chatID}/${this.#userID}`, {
-            headers: {
-                'Authorization': `Bearer ${this.#accessToken}`
-            },
-            body
-        });
+        try {
+            await this.#httpHelper.put(`${this.#baseURL}/chats/update/name/${chatID}/${this.#userID}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}`
+                },
+                body
+            });
+        } catch (error) {
+            if (error.errCode === 401) {
+                await this.refreshTokens();
+                await this.putChatName(name, chatID);
+            } else {
+                throw error;
+            }     
+        }
     }
 
     async putChatAdminStatus41User(isAdmin, chatID, memberID) {
         const body = { isAdmin };
-        await this.#httpHelper.put(`${this.#baseURL}/chats/update/members/is-admin/${chatID}/${this.#userID}/${memberID}`, {
-            headers: {
-                'Authorization': `Bearer ${this.#accessToken}`
-            },
-            body
-        });
+        try {
+            await this.#httpHelper.put(`${this.#baseURL}/chats/update/members/is-admin/${chatID}/${this.#userID}/${memberID}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}`
+                },
+                body
+            });
+        } catch (error) {
+            if (error.errCode === 401) {
+                await this.refreshTokens();
+                await this.putChatAdminStatus41User(isAdmin, chatID, memberID);
+            } else {
+                throw error;
+            } 
+        } 
     }
 
     async putChatDescription(description, chatID) {
         const body = { description };
-        this.#httpHelper.put(`${this.#baseURL}/chats/update/description/${chatID}/${this.#userID}`, {
-            headers: {
-                'Authorization': `Bearer ${this.#accessToken}`
-            },
-            body
-        });
+
+        try {
+            await this.#httpHelper.put(`${this.#baseURL}/chats/update/description/${chatID}/${this.#userID}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}`
+                },
+                body
+            });    
+        } catch (error) {
+            if (error.errCode === 401) {
+                await this.refreshTokens();
+                await this.putChatDescription(description, chatID);
+            } else {
+                throw error;
+            }     
+        } 
     }
 
     async deleteOneChatMember(chatID, memberID) {
-        this.#httpHelper.delete(`${this.#baseURL}/chats/members/${chatID}/${this.#userID}/${memberID}`, {
-            headers: {
-                'Authorization': `Bearer ${this.#accessToken}`
-            }
-        });
+        try {
+            await this.#httpHelper.delete(`${this.#baseURL}/chats/members/${chatID}/${this.#userID}/${memberID}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}`
+                }
+            });    
+        } catch (error) {
+            if (error.errCode === 401) {
+                await this.refreshTokens();
+                await this.deleteOneChatMember(chatID, memberID);
+            } else {
+                throw error;
+            }    
+        }   
     }
 
     //MESSAGE ENDPOINTS
     async getMessages41Chat(chatID, start=0, limit=100) {
-        const messages = await this.#httpHelper.get(`${this.#baseURL}/messages/${chatID}/${this.#userID}?start=${start}&limit=${limit}`, {
-            headers: {
-                'Authorization': `Bearer ${this.#accessToken}`
-            }
-        });
-        return messages;
+        try {
+            const messages = await this.#httpHelper.get(`${this.#baseURL}/messages/${chatID}/${this.#userID}?start=${start}&limit=${limit}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}`
+                }
+            });
+            return messages;    
+        } catch (error) {
+            if (error.errCode === 401) {
+                await this.refreshTokens();
+                const messages = await this.getMessages41Chat(chatID, start=0, limit=100);
+                return messages;
+            } else {
+                throw error;
+            }    
+        }
     }
 
     async getAllUnrecievedMessages41User(start=0, limit=100000) {
-        const res = await this.#httpHelper.get(`${this.#baseURL}/messages/all/unrecieved/${this.#userID}`, {
-            headers: {
-                'Authorization': `Bearer ${this.#accessToken}`
-            }
-        });
-
-        return res;
+        try {
+            const res = await this.#httpHelper.get(`${this.#baseURL}/messages/all/unrecieved/${this.#userID}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}`
+                }
+            });
+            return res;    
+        } catch (error) {
+            if (error.errCode === 401) {
+                await this.refreshTokens();
+                const res = await this.getAllUnrecievedMessages41User(start, limit);
+                return res;
+            } else {
+                throw error;
+            }     
+        }
     }
 
     async sendTextMessage(message) {
@@ -269,42 +428,72 @@ class LoroClient {
         formData.append("emisorUserID", this.#userID);
         formData.append("content", message.content);
 
-        const res = await fetch(`${this.#baseURL}/messages/send-one`, {
-            method: "POST",
-            headers: {
-                'Authorization': `Bearer ${this.#accessToken}`
-            },
-            body: formData
-        });
+        try {
+            const res = await fetch(`${this.#baseURL}/messages/send-one`, {
+                method: "POST",
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}`
+                },
+                body: formData
+            });
 
-        return res;
+            return res;    
+        } catch (error) {
+            if (error.errCode === 401) {
+                await this.refreshTokens();
+                const res = await this.sendTextMessage(message);
+                return res;
+            } else {
+                throw error;
+            }    
+        }
     }
 
     async sendManyTextMessages(messages) {
         const formData = new FormData();
         formData.append("textMsgs", JSON.stringify(messages));
 
-        const res = await fetch(`${this.#baseURL}/messages/send-many`, {
-            method: "POST",
-            headers: {
-                'Authorization': `Bearer ${this.#accessToken}`
-            },
-            body: formData
-        });
+        try {
+            const res = await fetch(`${this.#baseURL}/messages/send-many`, {
+                method: "POST",
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}`
+                },
+                body: formData
+            });
 
-        return res;
+            return res;    
+        } catch (error) {
+            if (error.errCode === 401) {
+                await this.refreshTokens();
+                const res = await this.sendManyTextMessages(messages);
+                return res;
+            } else {
+                throw error;
+            }     
+        }
+        
     }
 
     async deleteManyMessages(chatID, msgIDs) {
         const body = { msgIDs };
-        this.#httpHelper.delete(`${this.#baseURL}/messages/delete-many/${chatID}/${this.#userID}`, {
-            headers: {
-                'Authorization': `Bearer ${this.#accessToken}`
-            },
-            body
-        })
+        try {
+            this.#httpHelper.delete(`${this.#baseURL}/messages/delete-many/${chatID}/${this.#userID}`, {
+                headers: {
+                    'Authorization': `Bearer ${this.#accessToken}`
+                },
+                body
+            });    
+        } catch (error) {
+            if (error.errCode === 401) {
+                await this.refreshTokens();
+                await this.deleteManyMessages(chatID, msgIDs);
+            } else {
+                throw error;
+            }     
+        }
+        
     }
-
 
 }
 
